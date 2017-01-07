@@ -33,13 +33,23 @@ authorize()
 
 // check event every n seconds
 var last_ts = Date.now()
+var timers = []
+
 function checkEvents() {
     console.log('check events, last_ts=' + last_ts)
     request.get(URL_EVENTS + last_ts, (_, __, body)=>{
         JSON.parse(body).events.reverse().map( (ev)=>{
             last_ts = parseInt(ev.ts) + 1
-            mqtt.publish('gigaset/' + ev.o.friendly_name, (ev.o.type=='ds02' && ev.type=='close') ? 'OFF':'ON')
             console.log('event: ' + ev.o.friendly_name + " / " + ev.type)
+            mqtt.publish('gigaset/' + ev.o.friendly_name, (ev.o.type=='ds02' && ev.type=='close') ? 'OFF':'ON')
+
+            // publish a delayed 'OFF' event for motions sensors
+            if (ev.type == 'yc01.motion' || ev.type == 'movement') {
+                try { clearTimeout( timers[ev.o.friendly_name]) } catch (_) {}
+                timers[ev.o.friendly_name] = setTimeout( ()=>{
+                    mqtt.publish('gigaset/' + ev.o.friendly_name, 'OFF')
+                }, config.get('off_event_delay')*1000)
+            }
         })
     })
     setTimeout(checkEvents, config.get('check_events_interval')*1000)

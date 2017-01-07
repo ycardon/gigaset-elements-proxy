@@ -13,3 +13,6 @@ auth_interval: 10
 
 # check for new events every in seconds
 check_events_interval: 5
+
+# send a delayed 'off' motion event after n seconds
+off_event_delay: 30
