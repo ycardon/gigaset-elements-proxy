@@ -1,0 +1,15 @@
+# credentials on https://my.gigaset-elements.com
+email:    'me@mail.org'
+password: '****'
+
+# camera id (found with /api/v1/me/cameras)
+camera_id: 'xxxx'
+
+# port gigaset-server is running on
+port: 3000
+
+# re-authentication interval in minutes
+auth_interval: 10
+
+# check for new events every in seconds
+check_events_interval: 5
