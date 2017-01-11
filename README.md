@@ -1,12 +1,14 @@
 # gigaset-server
 
-Is a simple local proxy to gigaset-elements API, doing periodic re-authentication.
+Is a very simple gateway to gigaset-elements API:
 
-Events periodically fetched from gigaset-elements API are also pushed to a MQTT broker.
+- periodic re-authentication
+- local proxy to the gigaset-elements APIs
+- gigaset-elements events are periodically fetched and pushed to a MQTT broker
 
-As gigaset-elements does not provide local network APIs, I use it to access my equipement from https://home-assistant.io. It gives access to:
+As gigaset-elements does not provide local network APIs, I use it to access my equipement from https://home-assistant.io
 
-## raw gigaset API
+## Raw API
 
 - [basestations](/api/v1/me/basestations)
 
@@ -23,11 +25,16 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 - [notification settings](/api/v1/me/notifications/users/channels)
 
-## convenience APIs
+## Convenience APIs
 
-- [live camera stream](/live)
+- [live camera stream](/live): you have to set the camera id in the configuration file
 
 - [sensors status](/sensors)
+
+## MQTT events
+
+- pushes event to queue `/gigaset/<sensor_friendly_name>` with `ON` or `OFF` payload
+- motions events (movement detector and camera) automatically generate a delayed `OFF` event
 
 ## installation
 
@@ -41,8 +48,3 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 ## limitations and todos
 
 - not many error checking :/
-
-## launch a local MQTT and a test client
-
-- mosca -v | pino
-- node test_client.js
