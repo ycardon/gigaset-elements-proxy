@@ -14,17 +14,18 @@ const URL_EVENTS  = URL_BASE + '/api/v2/me/events?from_ts='
 const URL_CAMERA  = URL_BASE + '/api/v1/me/cameras/{id}/liveview/start'
 const URL_SENSORS = URL_BASE + '/api/v1/me/basestations'
 
+
 // ------ AUTHORIZE ------
 
 // authorize every n minutes
 function authorize() {
-    console.log('authorize')
+    console.log('authorizing')
     request.post(URL_LOGIN, {form: {email: config.get('email'), password: config.get('password')}}, ()=>{
-        request.get(URL_AUTH, ()=>{
+        request.get(URL_AUTH, (_, __, body)=>{
             emitter.emit('authorized')
         })
     })
-    setTimeout(authorize, config.get('auth_interval')*60*1000)
+    setTimeout( authorize, config.get('auth_interval')*60*1000 )
 }
 authorize()
 
@@ -36,23 +37,23 @@ var last_ts = Date.now()
 var timers = []
 
 function checkEvents() {
-    console.log('check events, last_ts=' + last_ts)
+    console.log('checking events')
     request.get(URL_EVENTS + last_ts, (_, __, body)=>{
         JSON.parse(body).events.reverse().map( (ev)=>{
             last_ts = parseInt(ev.ts) + 1
-            console.log('event: ' + ev.o.friendly_name + " / " + ev.type)
+            console.log('new event: ' + ev.o.friendly_name + " | " + ev.type)
             mqtt.publish('gigaset/' + ev.o.friendly_name, (ev.o.type=='ds02' && ev.type=='close') ? 'OFF':'ON')
 
             // publish a delayed 'OFF' event for motions sensors
             if (ev.type == 'yc01.motion' || ev.type == 'movement') {
-                try { clearTimeout( timers[ev.o.friendly_name]) } catch (_) {}
+                try { clearTimeout(timers[ev.o.friendly_name]) } catch (_) {}
                 timers[ev.o.friendly_name] = setTimeout( ()=>{
                     mqtt.publish('gigaset/' + ev.o.friendly_name, 'OFF')
-                }, config.get('off_event_delay')*1000)
+                }, config.get('off_event_delay')*1000 )
             }
         })
     })
-    setTimeout(checkEvents, config.get('check_events_interval')*1000)
+    setTimeout( checkEvents, config.get('check_events_interval')*1000 )
 }
 emitter.once('authorized', checkEvents)
 
