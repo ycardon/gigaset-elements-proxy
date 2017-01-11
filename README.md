@@ -1,4 +1,4 @@
-# gigaset-server
+# gigaset-elements-proxy
 
 Is a very simple gateway to gigaset-elements API:
 
