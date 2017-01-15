@@ -8,6 +8,8 @@ Is a very simple gateway to gigaset-elements API:
 
 As gigaset-elements does not provide local network APIs, I use it to access my equipement from https://home-assistant.io
 
+Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements
+
 ## Raw API
 
 - [basestations](/api/v1/me/basestations)
