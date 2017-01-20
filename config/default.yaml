@@ -9,10 +9,10 @@ camera_id: 'xxxx'
 port: 3000
 
 # re-authentication interval in minutes
-auth_interval: 10
+auth_interval: 60
 
 # check for new events every in seconds
-check_events_interval: 5
+check_events_interval: 2
 
 # send a delayed 'off' motion event after n seconds
 off_event_delay: 30
