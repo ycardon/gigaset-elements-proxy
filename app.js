@@ -57,7 +57,7 @@ let emitter = new (require ('events').EventEmitter)
  
 // ------ WEB SERVER ------
 {
-    let marked = require ('marked')
+    let md = require ('markdown-it')()
     let fs = require ('fs')
     let app = require ('express')()
  
@@ -85,7 +85,7 @@ let emitter = new (require ('events').EventEmitter)
     // readme
     app.get('*', (_, res)=>{
         fs.readFile('README.md', 'utf8', (_, data)=>{
-            res.send(marked(data.toString()))
+            res.send(md.render(data.toString()))
         })
     })
  
