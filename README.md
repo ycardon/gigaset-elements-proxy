@@ -10,6 +10,8 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements
 
+[![Dependency Status](https://gemnasium.com/badges/github.com/ycardon/gigaset-elements-proxy.svg)](https://gemnasium.com/github.com/ycardon/gigaset-elements-proxy)
+
 ## Raw API
 
 - [basestations](/api/v1/me/basestations)
