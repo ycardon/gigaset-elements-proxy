@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 // gigaset-elements URLs
 const URL_LOGIN   = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
 const URL_BASE    = 'https://api.gigaset-elements.de'

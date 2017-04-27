@@ -43,11 +43,29 @@ Strongly inspired by the Python command line version that can be find under http
 
 ## installation
 
+from git
+
 ```
-npm install
-vim config/default.yaml    
-node app.js
+> git clone https://github.com/ycardon/gigaset-elements-proxy
+> cd gigaset-elements-proxy
+> npm install
+> vim config/default.yaml    
+> node app.js
 ```
+
+from npm
+
+```
+install
+> [sudo] npm install gigaset-elements-proxy -g
+
+locate then edit config/default.yaml with
+> npm list gigaset-elements-proxy
+
+run
+> ge-proxy
+```
+
 You can also check https://github.com/lorenwest/node-config/wiki/Configuration-Files
 
 ## limitations and todos
