@@ -1,7 +1,7 @@
 {
-  "name": "gigasetelements-server",
+  "name": "gigaset-elements-proxy",
   "version": "0.1.0",
-  "description": "local proxy to Gigaset Elements APIs",
+  "description": "a simple web and mqtt local gateway for reachin gigaset-elements API",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
