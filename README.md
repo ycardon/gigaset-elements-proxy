@@ -27,7 +27,9 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 ## Convenience APIs
 
-- [live camera stream](/live): you have to set the camera id in the configuration file
+- [live camera (redirect to a cloud-based RTSP stream)](/live): you have to set the camera id in the configuration file
+
+- [live camera (local MJPEG stream)](/live-local): you have to discover your camera admin password (using tcpdump for instance)
 
 - [sensors status](/sensors)
 

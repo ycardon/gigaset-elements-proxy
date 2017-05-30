@@ -2,9 +2,6 @@
 email:    'me@mail.org'
 password: '****'
 
-# camera id (found with /api/v1/me/cameras)
-camera_id: 'xxxx'
-
 # port gigaset-server is running on
 port: 3000
 
@@ -12,7 +9,14 @@ port: 3000
 auth_interval: 60
 
 # check for new events every in seconds
-check_events_interval: 2
+check_events_interval: 10
 
 # send a delayed 'off' motion event after n seconds
 off_event_delay: 30
+
+# camera id (found with /api/v1/me/cameras)
+camera_id: 'xxxx'
+
+# camera local infos (used for local streaming)
+camera_ip: 'xxx.xxx.xxx.xxx'
+camera_password: '****'
