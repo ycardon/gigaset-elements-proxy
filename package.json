@@ -1,6 +1,6 @@
 {
   "name": "gigaset-elements-proxy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "a simple web and mqtt local gateway for reachin gigaset-elements API",
   "keywords": ["gigaset-elements", "home-assistant", "mqtt"], 
   "homepage": "https://github.com/ycardon/gigaset-elements-proxy",
