@@ -68,7 +68,7 @@ run
 
 You can also check https://github.com/lorenwest/node-config/wiki/Configuration-Files
 
-# credits
+## credits
 
 - Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements (thank you !!)
 - Security audits
