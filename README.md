@@ -8,8 +8,6 @@ Is a very simple gateway to gigaset-elements API:
 
 As gigaset-elements does not provide local network APIs, I use it to access my equipement from https://home-assistant.io
 
-Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements
-
 [![Dependency Status](https://gemnasium.com/badges/github.com/ycardon/gigaset-elements-proxy.svg)](https://gemnasium.com/github.com/ycardon/gigaset-elements-proxy)
 [![Known Vulnerabilities](https://snyk.io/test/github/ycardon/gigaset-elements-proxy/badge.svg)](https://snyk.io/test/github/ycardon/gigaset-elements-proxy)
 
@@ -32,7 +30,9 @@ Strongly inspired by the Python command line version that can be find under http
 
 ## Convenience APIs
 
-- [live camera stream](/live): you have to set the camera id in the configuration file
+- [live camera (redirect to a cloud-based RTSP stream)](/live): you have to set the camera id in the configuration file
+
+- [live camera (local MJPEG stream)](/live-local): you have set your camera local infos in the configuration file
 
 - [sensors status](/sensors)
 
@@ -68,6 +68,13 @@ run
 
 You can also check https://github.com/lorenwest/node-config/wiki/Configuration-Files
 
-## limitations and todos
+# credits
 
-- not many error checking :/
+- Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements (thank you !!)
+- Security audits
+    - https://www.iot-tests.org/2017/01/testing-gigaset-elements-camera/
+    - https://team-sik.org/sik-2016-044/
+    - https://team-sik.org/sik-2016-045/
+    - https://team-sik.org/sik-2016-046/
+    - https://team-sik.org/sik-2016-047/
+    - https://team-sik.org/sik-2016-048/

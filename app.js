@@ -68,11 +68,16 @@ let emitter = new (require ('events').EventEmitter)
         request.get(URL_BASE + req.url).pipe(res)
     })
  
-    // live camera stream
+    // live camera (redirect to a cloud-based RTSP stream)
     app.get('/live', (_, res)=>{
         request.get(URL_CAMERA.replace('{id}', config.get('camera_id')), (_, __, body)=>{
             try { res.redirect(JSON.parse(body).uri.rtsp) } catch (_) { res.status(410).end() }
         })
+    })
+
+    // live camera (local MJPEG stream)
+    app.get('/live-local', (_, res)=>{
+        request.get('http://admin:' + config.get('camera_password') + '@' + config.get('camera_ip') + '/stream.jpg').pipe(res)
     })
  
     // sensors

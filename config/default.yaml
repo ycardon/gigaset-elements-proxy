@@ -2,17 +2,26 @@
 email:    'me@mail.org'
 password: '****'
 
-# camera id (found with /api/v1/me/cameras)
-camera_id: 'xxxx'
-
 # port gigaset-server is running on
 port: 3000
 
 # re-authentication interval in minutes
-auth_interval: 10
+auth_interval: 60
 
 # check for new events every in seconds
-check_events_interval: 5
+check_events_interval: 10
 
 # send a delayed 'off' motion event after n seconds
 off_event_delay: 30
+
+# camera id (found with /api/v1/me/cameras)
+camera_id: 'xxxx'
+
+# camera local IP (used for local streaming)
+camera_ip: 'xxx.xxx.xxx.xxx'
+
+# camera local password
+# $> echo –n "LUCKOTVF<MAC-address-reverse-order-uppercase-nocolon>YCAMVF" | base64
+# or discover it by sniffing your network while changing your camera config in the mobile app:
+# $> ssh <router> "tcpdump -i lbr0 -s0 -w - host <camera_ip>" | wireshark -k -i -
+camera_password: '****'
