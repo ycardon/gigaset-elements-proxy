@@ -8,18 +8,19 @@
     "ge-proxy": "./app.js"
   },
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yann Cardon <ycardon@gmail.com>",
   "repository" : "ycardon/gigaset-elements-proxy",
   "license": "ISC",
   "dependencies": {
-    "config": "^1.24.0",
-    "express": "^4.14.0",
-    "js-yaml": "^3.7.0",
+    "config": "^1.26.1",
+    "express": "^4.15.3",
+    "js-yaml": "^3.8.4",
     "markdown-it": "^8.3.1",
-    "mqtt": "^2.1.3",
-    "request": "^2.79.0"
+    "mqtt": "^2.8.0",
+    "request": "^2.81.0"
   },
   "preferGlobal": true
 
