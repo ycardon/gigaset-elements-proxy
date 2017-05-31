@@ -79,7 +79,7 @@ let emitter = new (require ('events').EventEmitter)
     app.get('/live-local', (_, res)=>{
         request.get('http://admin:' + config.get('camera_password') + '@' + config.get('camera_ip') + '/stream.jpg').pipe(res)
     })
- 
+
     // sensors
     app.get('/sensors', (_, res)=>{
         request.get(URL_SENSORS, (_, __, body)=>{
