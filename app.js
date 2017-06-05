@@ -32,7 +32,7 @@ const synchro = new events.EventEmitter()
 
 // ------ PUSH EVENTS TO MQTT ------
 {
-	const mqtt = require('mqtt').connect('mqtt://localhost')
+	const mqtt = require('mqtt').connect('mqtt://localhost', {clientId: 'gigaset-elements-proxy'})
 	const timers = new Map()
 	let last_ts = Date.now()
 
