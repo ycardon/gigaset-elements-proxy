@@ -9,6 +9,7 @@ const URL_CAMERA = URL_BASE + '/api/v1/me/cameras/{id}/liveview/start'
 const URL_SENSORS = URL_BASE + '/api/v1/me/basestations'
 
 // common libs
+require('console-stamp')(console, {colors: {stamp: 'grey', label: 'blue'}})
 const conf = require('config')
 const request = require('request').defaults({jar: true}) // set to retain cookies
 const events = require('events')
@@ -18,7 +19,7 @@ const synchro = new events.EventEmitter()
 {
 	// authorize every n minutes
 	function authorize() {
-		console.log('authorizing')
+		console.info('authorizing')
 		request.post(URL_LOGIN, {form: {email: conf.get('email'), password: conf.get('password')}}, () => {
 			request.get(URL_AUTH, () => {
 				synchro.emit('authorized')
@@ -40,7 +41,7 @@ const synchro = new events.EventEmitter()
 		request.get(URL_EVENTS + last_ts, (_, __, body) => {
 			JSON.parse(body).events.reverse().map(ev => {
 				last_ts = parseInt(ev.ts) + 1
-				console.log(`new event: ${ev.o.friendly_name} | ${ev.type}`)
+				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.type}`)
 				mqtt.publish(`gigaset/${ev.o.friendly_name}`, ev.o.type == 'ds02' && ev.type == 'close' ? 'OFF' : 'ON')
 
 				// publish a delayed 'OFF' event for motions sensors
@@ -49,6 +50,7 @@ const synchro = new events.EventEmitter()
 						clearTimeout(timers[ev.o.friendly_name])
 					} catch (_) {}
 					timers[ev.o.friendly_name] = setTimeout(() => {
+						console.log(`generating OFF event: ${ev.o.friendly_name}`)
 						mqtt.publish(`gigaset/${ev.o.friendly_name}`, 'OFF')
 					}, conf.get('off_event_delay') * 1000)
 				}
@@ -107,7 +109,7 @@ const synchro = new events.EventEmitter()
 	// launch server
 	synchro.once('authorized', () => {
 		app.listen(conf.get('port'), () => {
-			console.log(`server listening on http://localhost:${conf.get('port')}`)
+			console.info(`server listening on http://localhost:${conf.get('port')}`)
 		})
 	})
 }

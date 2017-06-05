@@ -2,7 +2,11 @@
   "name": "gigaset-elements-proxy",
   "version": "1.1.0",
   "description": "a simple web and mqtt local gateway for reachin gigaset-elements API",
-  "keywords": ["gigaset-elements", "home-assistant", "mqtt"], 
+  "keywords": [
+    "gigaset-elements",
+    "home-assistant",
+    "mqtt"
+  ],
   "homepage": "https://github.com/ycardon/gigaset-elements-proxy",
   "bin": {
     "ge-proxy": "./app.js"
@@ -12,10 +16,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yann Cardon <ycardon@gmail.com>",
-  "repository" : "ycardon/gigaset-elements-proxy",
+  "repository": "ycardon/gigaset-elements-proxy",
   "license": "ISC",
   "dependencies": {
     "config": "^1.26.1",
+    "console-stamp": "^0.2.5",
     "express": "^4.15.3",
     "js-yaml": "^3.8.4",
     "markdown-it": "^8.3.1",
@@ -23,5 +28,4 @@
     "request": "^2.81.0"
   },
   "preferGlobal": true
-
 }
