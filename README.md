@@ -38,8 +38,8 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 ## MQTT events
 
-- pushes event to queue `/gigaset/<sensor_friendly_name>` with `ON` or `OFF` payload
-- motions events (movement detector and camera) automatically generate a delayed `OFF` event
+- pushes event to queue `/gigaset/<sensor_friendly_name>` with `true` or `fasle` payload
+- motions events (movement detector and camera) automatically generate a delayed `false` event
 
 ## installation
 

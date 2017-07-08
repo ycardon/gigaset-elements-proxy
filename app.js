@@ -42,7 +42,7 @@ const synchro = new events.EventEmitter()
 			JSON.parse(body).events.reverse().map(ev => {
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.type}`)
-				mqtt.publish(`gigaset/${ev.o.friendly_name}`, ev.o.type == 'ds02' && ev.type == 'close' ? 'OFF' : 'ON')
+				mqtt.publish(`gigaset/${ev.o.friendly_name}`, ev.o.type == 'ds02' && ev.type == 'close' ? 'false' : 'true')
 
 				// publish a delayed 'OFF' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
@@ -51,7 +51,7 @@ const synchro = new events.EventEmitter()
 					} catch (_) {}
 					timers[ev.o.friendly_name] = setTimeout(() => {
 						console.log(`generating OFF event: ${ev.o.friendly_name}`)
-						mqtt.publish(`gigaset/${ev.o.friendly_name}`, 'OFF')
+						mqtt.publish(`gigaset/${ev.o.friendly_name}`, 'false')
 					}, conf.get('off_event_delay') * 1000)
 				}
 			})
