@@ -19,12 +19,12 @@
   "repository": "ycardon/gigaset-elements-proxy",
   "license": "ISC",
   "dependencies": {
-    "config": "^1.26.2",
-    "console-stamp": "^0.2.5",
-    "express": "^4.16.0",
+    "config": "^1.29.4",
+    "console-stamp": "^0.2.6",
+    "express": "^4.16.2",
     "js-yaml": "^3.10.0",
-    "markdown-it": "^8.4.0",
-    "mqtt": "^2.13.0",
+    "markdown-it": "^8.4.1",
+    "mqtt": "^2.15.3",
     "request": "^2.83.0"
   },
   "preferGlobal": true
