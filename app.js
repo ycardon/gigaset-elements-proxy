@@ -33,24 +33,26 @@ const synchro = new events.EventEmitter()
 // ------ PUSH EVENTS TO MQTT ------
 {
 	const mqtt = require('mqtt').connect('mqtt://localhost', {clientId: 'gigaset-elements-proxy'})
-	const timers = new Map()
-	let last_ts = Date.now()
+	const timers = new Map() // each event type gets a timer
+	let last_ts = Date.now() // timestamp of the last emited event
 
 	// check event every n seconds
 	function checkEvents() {
+
+		// request new events, treat the oldest first
 		request.get(URL_EVENTS + last_ts, (_, __, body) => {
 			JSON.parse(body).events.reverse().map(ev => {
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.type}`)
 				mqtt.publish(`gigaset/${ev.o.friendly_name}`, ev.o.type == 'ds02' && ev.type == 'close' ? 'false' : 'true')
 
-				// publish a delayed 'OFF' event for motions sensors
+				// publish a delayed 'false' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
 					try {
-						clearTimeout(timers[ev.o.friendly_name])
+						clearTimeout(timers[ev.o.friendly_name]) // delete existing timer for this event type, if any
 					} catch (_) {}
 					timers[ev.o.friendly_name] = setTimeout(() => {
-						console.log(`generating OFF event: ${ev.o.friendly_name}`)
+						console.log(`generating false event: ${ev.o.friendly_name}`)
 						mqtt.publish(`gigaset/${ev.o.friendly_name}`, 'false')
 					}, conf.get('off_event_delay') * 1000)
 				}
