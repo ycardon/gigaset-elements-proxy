@@ -42,6 +42,8 @@ const synchro = new events.EventEmitter()
 		// request new events, treat the oldest first
 		request.get(URL_EVENTS + last_ts, (_, __, body) => {
 			JSON.parse(body).events.reverse().map(ev => {
+
+				// publish event
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.type}`)
 				mqtt.publish(`gigaset/${ev.o.friendly_name}`, ev.o.type == 'ds02' && ev.type == 'close' ? 'false' : 'true')
