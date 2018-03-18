@@ -33,7 +33,7 @@ const synchro = new events.EventEmitter()
 // ------ PUSH EVENTS TO MQTT ------
 {
 	const mqtt = require('mqtt').connect('mqtt://localhost', {clientId: 'gigaset-elements-proxy'})
-	const timers = new Map() // each event type gets a timer
+	const timers = new Map() // each motion sensor event gets a timer
 	let last_ts = Date.now() // timestamp of the last emited event
 
 	// check event every n seconds
@@ -51,7 +51,7 @@ const synchro = new events.EventEmitter()
 				// publish a delayed 'false' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
 					try {
-						clearTimeout(timers[ev.o.friendly_name]) // delete existing timer for this event type, if any
+						clearTimeout(timers[ev.o.friendly_name]) // reset (delete) existing timer for motion sensor, if any
 					} catch (_) {}
 					timers[ev.o.friendly_name] = setTimeout(() => {
 						console.log(`generating false event: ${ev.o.friendly_name}`)
@@ -60,9 +60,9 @@ const synchro = new events.EventEmitter()
 				}
 			})
 		})
-		setTimeout(checkEvents, conf.get('check_events_interval') * 1000)
+		setTimeout(checkEvents, conf.get('check_events_interval') * 1000) // check again every n seconds
 	}
-	synchro.once('authorized', checkEvents)
+	synchro.once('authorized', checkEvents) // start once authorized
 }
 
 // ------ WEB SERVER ------
@@ -110,7 +110,7 @@ const synchro = new events.EventEmitter()
 		})
 	})
 
-	// launch server
+	// launch server, once authorized
 	synchro.once('authorized', () => {
 		app.listen(conf.get('port'), () => {
 			console.info(`server listening on http://localhost:${conf.get('port')}`)
