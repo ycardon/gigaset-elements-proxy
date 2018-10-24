@@ -71,6 +71,11 @@ You can get extra help on this [home-assistant community topic](https://communit
 
 You can also check https://github.com/lorenwest/node-config/wiki/Configuration-Files
 
+## Restrictions
+
+- only read events and states from the Gigaset Cloud API, no writes (eg. cannot change the status of the alarm system)
+- only track ``ds02`` (door sensors) and ``yc01`` (movement and camera movement sensors) event types but adding new sensors should be easy by modifying the code
+
 ## credits
 
 - Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements (thank you !!)
