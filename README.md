@@ -8,7 +8,6 @@ Is a very simple gateway to gigaset-elements API:
 
 As gigaset-elements does not provide local network APIs, I use it to access my equipement from https://home-assistant.io
 
-[![Dependency Status](https://gemnasium.com/badges/github.com/ycardon/gigaset-elements-proxy.svg)](https://gemnasium.com/github.com/ycardon/gigaset-elements-proxy)
 [![Known Vulnerabilities](https://snyk.io/test/github/ycardon/gigaset-elements-proxy/badge.svg)](https://snyk.io/test/github/ycardon/gigaset-elements-proxy)
 
 ## Raw API
@@ -38,12 +37,14 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 ## MQTT events
 
-- pushes event to queue `/gigaset/<sensor_friendly_name>` with `true` or `fasle` payload
+- pushes event to queue `gigaset/<sensor_friendly_name>` with `true` or `false` payload
 - motions events (movement detector and camera) automatically generate a delayed `false` event
 
 ## installation
 
-from git
+``nodejs`` package is required.
+
+from git (recommended if you have to customize the application to your needs)
 
 ```
 > git clone https://github.com/ycardon/gigaset-elements-proxy
@@ -66,6 +67,8 @@ run
 > ge-proxy
 ```
 
+You can get extra help on this [home-assistant community topic](https://community.home-assistant.io/t/help-needed-with-gigaset-elements/28201) or in the [issue section](https://github.com/ycardon/gigaset-elements-proxy/issues?utf8=✓&q=is%3Aissue)
+
 You can also check https://github.com/lorenwest/node-config/wiki/Configuration-Files
 
 ## credits
@@ -78,3 +81,4 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
     - https://team-sik.org/sik-2016-046/
     - https://team-sik.org/sik-2016-047/
     - https://team-sik.org/sik-2016-048/
+- Thank you to https://github.com/h4nc for his comments and suggestions
