@@ -97,7 +97,7 @@ const synchro = new events.EventEmitter()
 		request.get(URL_SENSORS, (_, __, body) => {
 			res.send(
 				JSON.parse(body)[0].sensors.map(s => {
-					return {name: s.friendly_name, status: s.status}
+					return {name: s.friendly_name, status: s.status, position_status: s.position_status}
 				})
 			)
 		})
