@@ -32,7 +32,7 @@ const synchro = new events.EventEmitter()
 
 // ------ PUSH EVENTS TO MQTT ------
 {
-	const mqtt = require('mqtt').connect('mqtt://localhost', {clientId: 'gigaset-elements-proxy'})
+	const mqtt = require('mqtt').connect(conf.get('mqtt_url'), conf.get('mqtt_options'))
 	const timers = new Map() // each motion sensor event gets a timer
 	let last_ts = Date.now() // timestamp of the last emited event
 
@@ -46,7 +46,7 @@ const synchro = new events.EventEmitter()
 				// publish event
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.type}`)
-				mqtt.publish(`gigaset/${ev.o.friendly_name}`, ev.o.type == 'ds02' && ev.type == 'close' ? 'false' : 'true')
+				mqtt.publish(`gigaset/${ev.o.friendly_name}`, ev.o.type == 'ds02' && (ev.type == 'close' || ev.type == 'tilt') ? 'false' : 'true')
 
 				// publish a delayed 'false' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
