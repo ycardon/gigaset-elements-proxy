@@ -33,9 +33,9 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 - [live camera (local MJPEG stream)](/live-local): you have set your camera local infos in the configuration file
 
-- [sensors status](/sensors) online/offline and open/close/tilt status of the sensors / equipements
+- [sensors status](/sensors): online/offline and open/close/tilt status of the sensors and equipements
 
-- [intrusion stettings](/intrusion_settings) selected mode of the alarm system
+- [intrusion stettings](/intrusion_settings): selected mode of the alarm system
 
 ## MQTT events
 
@@ -76,7 +76,14 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 ## Restrictions
 
 - only read events and states from the Gigaset Cloud API, no writes (eg. cannot change the status of the alarm system)
-- only track ``ds02`` (door sensors) and ``yc01`` (movement and camera movement sensors) event types but adding new sensors should be easy by modifying the code
+- only track ``ds02`` (door sensors) ``ws02``(window sensors) and ``yc01`` / ``ps02``(movement and camera movement sensors) event types
+
+## Improvements
+
+october 2018
+- added ``ws02`` window sensors type
+- added ``/intrusion_settings`` API to monitor selected alarm mode
+- added more options to configue MQTT broker connections
 
 ## credits
 
