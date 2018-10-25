@@ -103,6 +103,13 @@ const synchro = new events.EventEmitter()
 		})
 	})
 
+	// intrusion setting
+	app.get('/intrusion_settings', (_, res) => {
+		request.get(URL_SENSORS, (_, __, body) => {
+			res.send(JSON.parse(body)[0].intrusion_settings.active_mode)
+		})
+	})
+
 	// readme
 	app.get('*', (_, res) => {
 		fs.readFile('README.md', 'utf8', (_, data) => {

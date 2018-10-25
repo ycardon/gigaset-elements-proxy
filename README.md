@@ -33,7 +33,9 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 - [live camera (local MJPEG stream)](/live-local): you have set your camera local infos in the configuration file
 
-- [sensors status](/sensors)
+- [sensors status](/sensors) online/offline and open/close/tilt status of the sensors / equipements
+
+- [intrusion stettings](/intrusion_settings) selected mode of the alarm system
 
 ## MQTT events
 
