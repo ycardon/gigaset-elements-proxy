@@ -44,7 +44,7 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 ## installation
 
-``nodejs`` package is required.
+``npm`` package is required.
 
 from git (recommended if you have to customize the application to your needs)
 
@@ -69,6 +69,8 @@ run
 > ge-proxy
 ```
 
+Have a look on the ``examples`` directory for instructions on creating a service or configure the sensors inside home-assistant
+
 You can get extra help on this [home-assistant community topic](https://community.home-assistant.io/t/help-needed-with-gigaset-elements/28201) or in the [issue section](https://github.com/ycardon/gigaset-elements-proxy/issues?utf8=✓&q=is%3Aissue)
 
 You can also check https://github.com/lorenwest/node-config/wiki/Configuration-Files
@@ -81,6 +83,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 ## Improvements
 
 october 2018
+- added ``examples`` directory
 - added ``ws02`` window sensors type
 - added ``/intrusion_settings`` API to monitor selected alarm mode
 - added more options to configue MQTT broker connections
