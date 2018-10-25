@@ -46,7 +46,7 @@ const synchro = new events.EventEmitter()
 				// publish event
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
-				mqtt.publish(`gigaset/${ev.o.friendly_name}`, (ev.o.type == 'ds02' || ev.o.type == 'ws02') && (ev.type == 'close' || ev.type == 'tilt') ? 'false' : 'true')
+				mqtt.publish(`gigaset/${ev.o.friendly_name}`, (ev.o.type == 'ds02' || ev.o.type == 'ws02') && ev.type == 'close' ? 'false' : 'true')
 
 				// publish a delayed 'false' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
