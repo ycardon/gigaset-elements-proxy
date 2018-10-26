@@ -37,8 +37,16 @@ const synchro = new events.EventEmitter()
 	let last_ts = Date.now() // timestamp of the last emited event
 
 	// gigaset to mqtt event map (you can change this section according to your needs, throw an excetion to drop an event)
-	function eventMapper(sensor_type, event) {
-		switch (sensor_type) {
+	function eventMapper(event) {
+
+		// base events
+		if (event.type == 'isl01.bs01.intrusion_mode_loaded') { // changed security mode
+			if (event.o.modeAfter == 'home') return 'false'
+			else return 'true'
+		}
+
+		// sensor events
+		switch (event.o.type) {
 
 			case 'ds02': // door sensors
 			case 'ws02': // windows sensors
@@ -48,10 +56,6 @@ const synchro = new events.EventEmitter()
 			case 'ps02': // motion sensor
 			case 'ycam': // motion from camera
 				return 'true'
-
-			case 'isl01.bs01.intrusion_mode_loaded': // changed security mode
-				if (event.o.modeAfter == 'home') return 'false'
-				else return 'true'
 
 			default: // other events will be dropped
 				throw 'unhandled event type'
@@ -69,9 +73,9 @@ const synchro = new events.EventEmitter()
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
 				try {
-					mqtt.publish(`gigaset/${ev.o.friendly_name}`, eventMapper(ev.o.type, ev))
+					mqtt.publish(`gigaset/${ev.o.friendly_name}`, eventMapper(ev))
 				}
-				catch (e) {console.log ('event dropped: ' + e)}
+				catch (e) {console.log ('  event dropped: ' + e)}
 
 				// publish a delayed 'false' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
