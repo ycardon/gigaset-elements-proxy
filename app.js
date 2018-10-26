@@ -30,14 +30,15 @@ const synchro = new events.EventEmitter()
 	authorize()
 }
 
-// ------ PUSH EVENTS TO MQTT ------
+// ------ PUSH GIGASET EVENTS TO MQTT ------
 {
 	const mqtt = require('mqtt').connect(conf.get('mqtt_url'), conf.get('mqtt_options'))
-	const timers = new Map() // each motion sensor event gets a timer
+	const timers = new Map() // each motion sensor event gets an attached timer
 	let last_ts = Date.now() // timestamp of the last emited event
 
-	// gigaset to mqtt event map (you can change this section according to your needs, throw an excetion to drop an event)
-	function eventMapper(event) {
+	// tell what mqtt value a gigaset event should return
+	// you can change this section according to your needs, throw an exception to drop the event
+	function gigasetEventMapper(event) {
 
 		// base events
 		if (event.type == 'isl01.bs01.intrusion_mode_loaded') { // changed security mode
@@ -73,7 +74,7 @@ const synchro = new events.EventEmitter()
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
 				try {
-					mqtt.publish(`gigaset/${ev.o.friendly_name}`, eventMapper(ev))
+					mqtt.publish(`gigaset/${ev.o.friendly_name}`, gigasetEventMapper(ev))
 				}
 				catch (e) {console.log ('  event dropped: ' + e)}
 
@@ -132,14 +133,14 @@ const synchro = new events.EventEmitter()
 		})
 	})
 
-	// intrusion setting
+	// intrusion setting active mode (home, away...)
 	app.get('/intrusion_settings', (_, res) => {
 		request.get(URL_SENSORS, (_, __, body) => {
 			res.send(JSON.parse(body)[0].intrusion_settings.active_mode)
 		})
 	})
 
-	// readme
+	// returns the readme.md as default page
 	app.get('*', (_, res) => {
 		fs.readFile('README.md', 'utf8', (_, data) => {
 			res.send(md.render(data.toString()))
