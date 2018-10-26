@@ -36,6 +36,28 @@ const synchro = new events.EventEmitter()
 	const timers = new Map() // each motion sensor event gets a timer
 	let last_ts = Date.now() // timestamp of the last emited event
 
+	// gigaset to mqtt event map (you can change this section according to your needs)
+	function eventMapper(sensor_type, event) {
+		switch (sensor_type) {
+
+			case 'ds02': // door sensors
+			case 'ws02': // windows sensors
+				if (event.type == 'close') return 'false'
+				else return 'true'
+
+			case 'ps02': // motion sensor
+			case 'ycam': // motion from camera
+				return 'true'
+
+			case 'isl01.bs01.intrusion_mode_loaded': // changed security mode
+				if (event.o.modeAfter == 'home') return 'false'
+				else return 'true'
+
+			default:
+				return 'true'
+		}
+	}
+
 	// check event every n seconds
 	function checkEvents() {
 
@@ -46,7 +68,7 @@ const synchro = new events.EventEmitter()
 				// publish event
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
-				mqtt.publish(`gigaset/${ev.o.friendly_name}`, (ev.o.type == 'ds02' || ev.o.type == 'ws02') && ev.type == 'close' ? 'false' : 'true')
+				mqtt.publish(`gigaset/${ev.o.friendly_name}`, eventMapper(ev.o.type, ev))
 
 				// publish a delayed 'false' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
