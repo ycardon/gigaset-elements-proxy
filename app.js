@@ -36,7 +36,7 @@ const synchro = new events.EventEmitter()
 	const timers = new Map() // each motion sensor event gets a timer
 	let last_ts = Date.now() // timestamp of the last emited event
 
-	// gigaset to mqtt event map (you can change this section according to your needs)
+	// gigaset to mqtt event map (you can change this section according to your needs, throw an excetion to drop an event)
 	function eventMapper(sensor_type, event) {
 		switch (sensor_type) {
 
@@ -53,8 +53,8 @@ const synchro = new events.EventEmitter()
 				if (event.o.modeAfter == 'home') return 'false'
 				else return 'true'
 
-			default:
-				return 'true'
+			default: // other events will be dropped
+				throw 'unhandled event type'
 		}
 	}
 
@@ -68,7 +68,10 @@ const synchro = new events.EventEmitter()
 				// publish event
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
-				mqtt.publish(`gigaset/${ev.o.friendly_name}`, eventMapper(ev.o.type, ev))
+				try {
+					mqtt.publish(`gigaset/${ev.o.friendly_name}`, eventMapper(ev.o.type, ev))
+				}
+				catch (e) {console.log ('event dropped: ' + e)}
 
 				// publish a delayed 'false' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
