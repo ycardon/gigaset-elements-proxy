@@ -86,6 +86,7 @@ october 2018
 - added ``examples`` directory
 - added ``ws02`` window sensors type
 - added ``/intrusion_settings`` API to monitor selected alarm mode
+- added handling of basestation events (selected alarm mode)
 - added more options to configue MQTT broker connections
 
 ## credits
