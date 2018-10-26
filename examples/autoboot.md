@@ -2,7 +2,7 @@
 
 To create and autostart a ``gigaset-elements-proxy`` service under Raspian and any systemd enabled OS:
 
-- create a service definition file ``/etc/systemd/system/gigaset-server@myuser.service`` with the following content. The @myuser is used in the service definition to tell it has to be run with this user rights.
+- create a service definition file ``/etc/systemd/system/gigaset-server@pi.service`` with the following content. The @pi is used in the service definition to tell it has to be run with this user rights.
 
     ```
     [Unit]
@@ -12,7 +12,7 @@ To create and autostart a ``gigaset-elements-proxy`` service under Raspian and a
     [Service]
     Type=simple
     User=%i
-    WorkingDirectory=/home/myuser/bin/gigaset
+    WorkingDirectory=/home/pi/gigaset-elements-proxy
     ExecStart=/usr/bin/node app.js
     Restart=always
     RestartSec=10
@@ -21,7 +21,7 @@ To create and autostart a ``gigaset-elements-proxy`` service under Raspian and a
     WantedBy=multi-user.target
     ```
 
-- start the service ``sudo systemctl start gigaset-server@myuser.service``
-- enable it so that it starts on next reboot ``sudo systemctl enable gigaset-server@myuser.service``
+- start the service ``sudo systemctl start gigaset-server@pi.service``
+- enable it so that it starts on next reboot ``sudo systemctl enable gigaset-server@pi.service``
 
 More deltails about systemd services on [Archlinux wiki](https://wiki.archlinux.org/index.php/Systemd#Writing_unit_files) (one of the most accurate information of linux systems)
