@@ -83,6 +83,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 ## Improvements
 
 october 2018
+- when the server starts, send the actual status of the sensors and the alarm mode
 - added ``examples`` directory
 - added ``ws02`` window sensors type
 - added ``/intrusion_settings`` API to monitor selected alarm mode

@@ -19,7 +19,7 @@ const synchro = new events.EventEmitter()
 {
 	// authorize every n minutes
 	function authorize() {
-		console.info('authorizing')
+		console.log('authorizing')
 		request.post(URL_LOGIN, {form: {email: conf.get('email'), password: conf.get('password')}}, () => {
 			request.get(URL_AUTH, () => {
 				synchro.emit('authorized')
@@ -92,7 +92,33 @@ const synchro = new events.EventEmitter()
 		})
 		setTimeout(checkEvents, conf.get('check_events_interval') * 1000) // check again every n seconds
 	}
-	synchro.once('authorized', checkEvents) // start once authorized
+	
+	// send initial states of the sensors
+	function sendActualStates() {
+		
+		// actual status of sensors
+		request.get(URL_SENSORS, (_, __, body) => {
+			JSON.parse(body)[0].sensors.map(s => {
+				if (s.position_status != null) { // only for sensors that have a status
+					console.log(`sending actual state: ${s.friendly_name} | ${s.position_status}`)
+					mqtt.publish(`gigaset/${s.friendly_name}`, s.position_status == 'closed' ? 'false' : 'true')
+				}
+			})
+		})
+
+		// actual status of alarm mode
+		request.get(URL_SENSORS, (_, __, body) => {
+			let base = JSON.parse(body)[0]
+			console.log (`sending actual alarm mode: ${base.friendly_name} | ${base.intrusion_settings.active_mode}`)
+			mqtt.publish(`gigaset/${base.friendly_name}`, base.intrusion_settings.active_mode == 'home' ? 'false' : 'true')
+		})
+
+		// start the check events loop
+		checkEvents()
+	}
+
+	// once authorized, send initial states of the sensors
+	synchro.once('authorized', sendActualStates)
 }
 
 // ------ WEB SERVER ------
