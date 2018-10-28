@@ -23,5 +23,7 @@ To create and autostart a ``gigaset-elements-proxy`` service under Raspian and a
 
 - start the service ``sudo systemctl start gigaset-server@pi.service``
 - enable it so that it starts on next reboot ``sudo systemctl enable gigaset-server@pi.service``
+- status of the service ``systemctl status gigaset-server@pi``
+- logs of the service ``journalctl -fu gigaset-server@pi``
 
 More deltails about systemd services on [Archlinux wiki](https://wiki.archlinux.org/index.php/Systemd#Writing_unit_files) (one of the most accurate information of linux systems)
