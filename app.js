@@ -63,7 +63,7 @@ const synchro = new events.EventEmitter()
 		}
 	}
 
-	// check event every n seconds
+	// check new gigaset events
 	function checkEvents() {
 
 		// request new events, treat the oldest first
@@ -90,7 +90,6 @@ const synchro = new events.EventEmitter()
 				}
 			})
 		})
-		setTimeout(checkEvents, conf.get('check_events_interval') * 1000) // check again every n seconds
 	}
 	
 	// send initial states of the sensors
@@ -112,13 +111,13 @@ const synchro = new events.EventEmitter()
 			console.log (`sending actual alarm mode: ${base.friendly_name} | ${base.intrusion_settings.active_mode}`)
 			mqtt.publish(`gigaset/${base.friendly_name}`, base.intrusion_settings.active_mode == 'home' ? 'false' : 'true')
 		})
-
-		// start the check events loop
-		checkEvents()
 	}
 
-	// once authorized, send initial states of the sensors
-	synchro.once('authorized', sendActualStates)
+	// once authorized, send initial states of the sensors and start the chekevents loop
+	synchro.once('authorized', ()=>{
+		setImmediate(sendActualStates)
+		setInterval(checkEvents, conf.get('check_events_interval') * 1000) // check again every n seconds
+	})
 }
 
 // ------ WEB SERVER ------
@@ -157,6 +156,12 @@ const synchro = new events.EventEmitter()
 				})
 			)
 		})
+	})
+
+	// send events on mqtt corresponding to actual sensor states
+	app.get('/force-refresh', (_, res) => {
+		sendActualStates()
+		res.send('done')
 	})
 
 	// intrusion setting active mode (home, away...)

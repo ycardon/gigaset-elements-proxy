@@ -37,6 +37,8 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 - [intrusion stettings](/intrusion_settings): selected mode of the alarm system
 
+- [force refresh](/force-refresh): send the actual status of the sensors and the alarm mode as mqtt events
+
 ## MQTT events
 
 - pushes event to queue `gigaset/<sensor_friendly_name>` with `true` or `false` payload
@@ -84,6 +86,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 
 october 2018
 - when the server starts, send the actual status of the sensors and the alarm mode
+- added the ``/force-refresh`` API to send again the actual status of the sensors and the alarm mode
 - added ``examples`` directory
 - added ``ws02`` window sensors type
 - added ``/intrusion_settings`` API to monitor selected alarm mode
