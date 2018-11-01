@@ -84,7 +84,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 
 ## Improvements
 
-### v1.3.1 Halloween (1 november 2018)
+### v1.3.2 Halloween (1 november 2018)
 
 - when the server starts, send the actual status of the sensors and the alarm mode
 - added the ``/force-refresh`` API to send again the actual status of the sensors and the alarm mode
@@ -93,6 +93,8 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - added ``/intrusion_settings`` API to monitor selected alarm mode
 - added handling of basestation events (selected alarm mode)
 - added more options to configue MQTT broker connections
+- fixed CVE in dependency
+- logging server version
 
 ## credits
 

@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// common
+const VERSION = 'v1.3.2 Halloween'
+
 // gigaset-elements URLs
 const URL_LOGIN = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
 const URL_BASE = 'https://api.gigaset-elements.de'
@@ -19,6 +22,7 @@ const synchro = new events.EventEmitter()
 {
 	// authorize every n minutes
 	function authorize() {
+		console.info(`gigaset-element-provy ${VERSION} starting`)
 		console.log('authorizing')
 		request.post(URL_LOGIN, {form: {email: conf.get('email'), password: conf.get('password')}}, () => {
 			request.get(URL_AUTH, () => {
@@ -35,41 +39,41 @@ const synchro = new events.EventEmitter()
 	const mqtt = require('mqtt').connect(conf.get('mqtt_url'), conf.get('mqtt_options'))
 	const timers = new Map() // each motion sensor event gets an attached timer
 	let last_ts = Date.now() // timestamp of the last emited event
-
+	
 	// tell what mqtt value a gigaset event should return
 	// you can change this section according to your needs, throw an exception to drop the event
 	function gigasetEventMapper(event) {
-
+		
 		// base events
 		if (event.type == 'isl01.bs01.intrusion_mode_loaded') { // changed security mode
 			if (event.o.modeAfter == 'home') return 'false'
 			else return 'true'
 		}
-
+		
 		// sensor events
 		switch (event.o.type) {
-
+			
 			case 'ds02': // door sensors
 			case 'ws02': // windows sensors
-				if (event.type == 'close') return 'false'
-				else return 'true'
-
+			if (event.type == 'close') return 'false'
+			else return 'true'
+			
 			case 'ps02': // motion sensor
 			case 'ycam': // motion from camera
-				return 'true'
-
+			return 'true'
+			
 			default: // other events will be dropped
-				throw 'unhandled event type'
+			throw 'unhandled event type'
 		}
 	}
-
+	
 	// check new gigaset events
 	function checkEvents() {
-
+		
 		// request new events, treat the oldest first
 		request.get(URL_EVENTS + last_ts, (_, __, body) => {
 			JSON.parse(body).events.reverse().map(ev => {
-
+				
 				// publish event
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
@@ -77,7 +81,7 @@ const synchro = new events.EventEmitter()
 					mqtt.publish(`gigaset/${ev.o.friendly_name}`, gigasetEventMapper(ev))
 				}
 				catch (e) {console.log ('  event dropped: ' + e)}
-
+				
 				// publish a delayed 'false' event for motions sensors
 				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
 					try {
