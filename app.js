@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.3.2 Halloween'
+const VERSION = 'v1.3.3'
 
 // gigaset-elements URLs
 const URL_LOGIN = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
@@ -55,15 +55,15 @@ const synchro = new events.EventEmitter()
 			
 			case 'ds02': // door sensors
 			case 'ws02': // windows sensors
-			if (event.type == 'close') return 'false'
-			else return 'true'
+				if (event.type == 'close') return 'false'
+				else return 'true'
 			
 			case 'ps02': // motion sensor
 			case 'ycam': // motion from camera
-			return 'true'
+				return 'true'
 			
 			default: // other events will be dropped
-			throw 'unhandled event type'
+				throw 'unhandled event type'
 		}
 	}
 	

@@ -10,7 +10,10 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 [![Known Vulnerabilities](https://snyk.io/test/github/ycardon/gigaset-elements-proxy/badge.svg)](https://snyk.io/test/github/ycardon/gigaset-elements-proxy)
 
-## Raw API
+## Raw Gigaset APIs
+
+These are the API that are published on Gigaset Cloud, ``gigaset-elements-proxy`` only re-expose them locally without authentication.
+Note that if you're reading this page on github, theses links does not work: you have to install the project.
 
 - [basestations](/api/v1/me/basestations)
 
@@ -29,6 +32,9 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 ## Convenience APIs
 
+These extra APIs are based on raw Gigaset APIs and apply light treatment in order to make them easier to use in a 3rd party application.
+Note that if you're reading this page on github, theses links does not work: you have to install the project.
+
 - [live camera (redirect to a cloud-based RTSP stream)](/live): you have to set the camera id in the configuration file
 
 - [live camera (local MJPEG stream)](/live-local): you have set your camera local infos in the configuration file
@@ -44,7 +50,7 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 - pushes event to queue `gigaset/<sensor_friendly_name>` with `true` or `false` payload
 - motions events (movement detector and camera) automatically generate a delayed `false` event
 
-## installation
+## Installation
 
 ``npm`` package is required.
 
