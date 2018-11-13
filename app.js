@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.3.3'
+const VERSION = 'v1.3.4'
 
 // gigaset-elements URLs
 const URL_LOGIN = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
@@ -23,9 +23,9 @@ const synchro = new events.EventEmitter()
 	// authorize every n minutes
 	function authorize() {
 		console.info(`gigaset-element-provy ${VERSION} starting`)
-		console.log('authorizing')
 		request.post(URL_LOGIN, {form: {email: conf.get('email'), password: conf.get('password')}}, () => {
 			request.get(URL_AUTH, () => {
+				console.info('authorized on gigaset cloud api')
 				synchro.emit('authorized')
 			})
 		})
@@ -40,6 +40,10 @@ const synchro = new events.EventEmitter()
 	const timers = new Map() // each motion sensor event gets an attached timer
 	let last_ts = Date.now() // timestamp of the last emited event
 	
+	// logs mqtt connection status
+	mqtt.stream.on('error', err => {console.error("mqtt initial connection error: ", err)})
+	mqtt.on('connect', err => {console.info("mqtt connected")})
+
 	// tell what mqtt value a gigaset event should return
 	// you can change this section according to your needs, throw an exception to drop the event
 	function gigasetEventMapper(event) {

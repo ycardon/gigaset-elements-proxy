@@ -102,6 +102,10 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - fixed CVE in dependency
 - logging server version
 
+### v1.3.4 Armistice (11 november 2018)
+
+- logging mqtt connection errors
+
 ## credits
 
 - Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements (thank you !!)
