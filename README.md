@@ -102,7 +102,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - fixed CVE in dependency
 - logging server version
 
-### v1.3.4 Armistice (11 november 2018)
+### v1.3.5 Armistice (11 november 2018)
 
 - logging mqtt connection errors
 - basestation event now returns the mode of the alarm mode instead of true for home
