@@ -117,7 +117,7 @@ const synchro = new events.EventEmitter()
 		request.get(URL_SENSORS, (_, __, body) => {
 			let base = JSON.parse(body)[0]
 			console.log (`sending actual alarm mode: ${base.friendly_name} | ${base.intrusion_settings.active_mode}`)
-			mqtt.publish(`gigaset/${base.friendly_name}`, base.intrusion_settings.active_mode == 'home' ? 'false' : 'true')
+			mqtt.publish(`gigaset/${base.friendly_name}`, base.intrusion_settings.active_mode)
 		})
 	}
 

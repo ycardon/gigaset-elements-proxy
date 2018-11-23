@@ -1,6 +1,6 @@
 {
   "name": "gigaset-elements-proxy",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "a simple web and mqtt local gateway for reaching gigaset-elements API",
   "keywords": [
     "gigaset-elements",
@@ -19,14 +19,14 @@
   "repository": "ycardon/gigaset-elements-proxy",
   "license": "ISC",
   "dependencies": {
-    "config": "^2.0.1",
+    "config": "^3.0.0",
     "console-stamp": "^0.2.7",
     "express": "^4.16.4",
     "js-yaml": "^3.12.0",
     "markdown-it": "^8.4.2",
+    "merge": ">=1.2.1",
     "mqtt": "^2.18.8",
-    "request": "^2.88.0",
-    "merge": ">=1.2.1"
+    "request": "^2.88.0"
   },
   "preferGlobal": true
 }
