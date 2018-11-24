@@ -50,8 +50,7 @@ const synchro = new events.EventEmitter()
 		
 		// base events
 		if (event.type == 'isl01.bs01.intrusion_mode_loaded') { // changed security mode
-			if (event.o.modeAfter == 'home') return 'false'
-			else return 'true'
+			return event.o.modeAfter
 		}
 		
 		// sensor events
