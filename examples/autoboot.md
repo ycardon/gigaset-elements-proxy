@@ -4,7 +4,7 @@ To create and autostart a ``gigaset-elements-proxy`` service under Raspian and a
 
 - create a service definition file ``/etc/systemd/system/gigaset-server@pi.service`` with the following content. The @pi is used in the service definition to tell it has to be run with this user rights.
 
-    ```
+    ```ini
     [Unit]
     Description=GigasetElements Server (local proxy to gigaset APIs)
     After=network.target
