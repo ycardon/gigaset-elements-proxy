@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.3.5'
+const VERSION = 'v1.4'
 
 // gigaset-elements URLs
 const URL_LOGIN = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
@@ -44,29 +44,33 @@ const synchro = new events.EventEmitter()
 	mqtt.stream.on('error', err => {console.error("mqtt initial connection error: ", err)})
 	mqtt.on('connect', err => {console.info("mqtt connected")})
 
-	// tell what mqtt value a gigaset event should return
+	// tell what mqtt topic and value a gigaset event should return
 	// you can change this section according to your needs, throw an exception to drop the event
 	function gigasetEventMapper(event) {
-		
-		// base events
-		if (event.type == 'isl01.bs01.intrusion_mode_loaded') { // changed security mode
-			return event.o.modeAfter
+		let topic = event.o.friendly_name
+
+		// base events : changed security mode
+		if (event.type == 'isl01.bs01.intrusion_mode_loaded') { 
+			return [topic, event.o.modeAfter]
 		}
-		
+
 		// sensor events
 		switch (event.o.type) {
 			
 			case 'ds02': // door sensors
 			case 'ws02': // windows sensors
-				if (event.type == 'close') return 'false'
-				else return 'true'
+				if (event.type == 'close') return [topic, 'false']
+				else return [topic, 'true']
 			
 			case 'ps02': // motion sensor
 			case 'ycam': // motion from camera
-				return 'true'
-			
+				return [topic, 'true']
+
+			case 'sp01': // intrusion detected, siren must fire
+				return [topic, 'true']
+
 			default: // other events will be dropped
-				throw 'unhandled event type'
+				throw 'unhandled event type: ' + event.o.type 
 		}
 	}
 	
@@ -81,7 +85,8 @@ const synchro = new events.EventEmitter()
 				last_ts = parseInt(ev.ts) + 1
 				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
 				try {
-					mqtt.publish(`gigaset/${ev.o.friendly_name}`, gigasetEventMapper(ev))
+					let [topic, value] = gigasetEventMapper(ev)
+					mqtt.publish(topic, value)
 				}
 				catch (e) {console.log ('  event dropped: ' + e)}
 				

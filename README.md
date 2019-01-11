@@ -86,7 +86,8 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 ## Restrictions
 
 - only read events and states from the Gigaset Cloud API, no writes (eg. cannot change the status of the alarm system)
-- only track ``ds02`` (door sensors) ``ws02``(window sensors) and ``yc01`` / ``ps02``(movement and camera movement sensors) event types
+- track ``ds02`` (door sensors) ``ws02``(window sensors) and ``yc01`` / ``ps02``(movement and camera movement sensors) event types
+- since v1.4, track ``sp01`` (siren command event)
 
 ## Improvements
 
@@ -106,6 +107,10 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 
 - logging mqtt connection errors
 - basestation event now returns the mode of the alarm mode instead of true for home
+
+### v1.4 Happy new year (11 january 2019)
+
+- fire an mqtt event when an alarm is trigered 
 
 ## credits
 
