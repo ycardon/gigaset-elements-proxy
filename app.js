@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.4'
+const VERSION = 'v1.4.0'
 
 // gigaset-elements URLs
 const URL_LOGIN = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
