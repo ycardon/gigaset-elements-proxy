@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.4.0'
+const VERSION = 'v1.4.1'
 
 // gigaset-elements URLs
 const URL_LOGIN = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
@@ -66,8 +66,9 @@ const synchro = new events.EventEmitter()
 			case 'ycam': // motion from camera
 				return [topic, 'true']
 
-			case 'sp01': // intrusion detected, siren must fire
-				return [topic, 'true']
+			case 'sp01': // intrusion detected (or acknowledged), siren must turn on (or turn off)
+				if (event.type == 'on') return [topic, 'true']
+				else return [topic, 'false']
 
 			default: // other events will be dropped
 				throw 'unhandled event type: ' + event.o.type 
