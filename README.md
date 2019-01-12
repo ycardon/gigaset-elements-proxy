@@ -108,7 +108,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - logging mqtt connection errors
 - basestation event now returns the mode of the alarm mode instead of true for home
 
-### v1.4.1 Happy new year (12 january 2019)
+### v1.4.2 Happy new year (12 january 2019)
 
 - fire an mqtt event when an alarm is trigered (true) or acknowledged (false)
 

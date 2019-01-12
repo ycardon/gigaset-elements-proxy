@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.4.1'
+const VERSION = 'v1.4.2'
+const MQTT_TOPIC = 'gigaset/'
 
 // gigaset-elements URLs
 const URL_LOGIN = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
@@ -10,6 +11,7 @@ const URL_AUTH = URL_BASE + '/api/v1/auth/openid/begin?op=gigaset'
 const URL_EVENTS = URL_BASE + '/api/v2/me/events?from_ts='
 const URL_CAMERA = URL_BASE + '/api/v1/me/cameras/{id}/liveview/start'
 const URL_SENSORS = URL_BASE + '/api/v1/me/basestations'
+
 
 // common libs
 require('console-stamp')(console, {colors: {stamp: 'grey', label: 'blue'}})
@@ -47,7 +49,7 @@ const synchro = new events.EventEmitter()
 	// tell what mqtt topic and value a gigaset event should return
 	// you can change this section according to your needs, throw an exception to drop the event
 	function gigasetEventMapper(event) {
-		let topic = event.o.friendly_name
+		let topic = MQTT_TOPIC + event.o.friendly_name
 
 		// base events : changed security mode
 		if (event.type == 'isl01.bs01.intrusion_mode_loaded') { 
