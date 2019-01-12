@@ -41,7 +41,7 @@ Note that if you're reading this page on github, theses links does not work: you
 
 - [sensors status](/sensors): online/offline and open/close/tilt status of the sensors and equipements
 
-- [intrusion stettings](/intrusion_settings): selected mode of the alarm system
+- [intrusion settings](/intrusion_settings): selected mode of the alarm system
 
 - [force refresh](/force-refresh): send the actual status of the sensors and the alarm mode as mqtt events
 
