@@ -90,6 +90,7 @@ const synchro = new events.EventEmitter()
 				try {
 					let [topic, value] = gigasetEventMapper(ev)
 					mqtt.publish(topic, value)
+					console.log(`event sent as mqtt_topic: ${topic}, value: ${value}` )
 				}
 				catch (e) {console.log ('  event dropped: ' + e)}
 				
@@ -100,7 +101,7 @@ const synchro = new events.EventEmitter()
 					} catch (_) {}
 					timers[ev.o.friendly_name] = setTimeout(() => {
 						console.log(`generating false event: ${ev.o.friendly_name}`)
-						mqtt.publish(`gigaset/${ev.o.friendly_name}`, 'false')
+						mqtt.publish(`${MQTT_TOPIC}${ev.o.friendly_name}`, 'false')
 					}, conf.get('off_event_delay') * 1000)
 				}
 			})
