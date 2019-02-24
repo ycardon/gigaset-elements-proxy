@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.4.2'
+const VERSION = 'v1.4.3'
 const MQTT_TOPIC = 'gigaset/'
 
 // gigaset-elements URLs
@@ -82,29 +82,31 @@ const synchro = new events.EventEmitter()
 		
 		// request new events, treat the oldest first
 		request.get(URL_EVENTS + last_ts, (_, __, body) => {
-			JSON.parse(body).events.reverse().map(ev => {
-				
-				// publish event
-				last_ts = parseInt(ev.ts) + 1
-				console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
-				try {
-					let [topic, value] = gigasetEventMapper(ev)
-					mqtt.publish(topic, value)
-					console.log(`event sent as mqtt_topic: ${topic}, value: ${value}` )
-				}
-				catch (e) {console.log ('  event dropped: ' + e)}
-				
-				// publish a delayed 'false' event for motions sensors
-				if (ev.type == 'yc01.motion' || ev.type == 'movement') {
+			try {
+				JSON.parse(body).events.reverse().map(ev => {
+					
+					// publish event
+					last_ts = parseInt(ev.ts) + 1
+					console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
 					try {
-						clearTimeout(timers[ev.o.friendly_name]) // reset (delete) existing timer for motion sensor, if any
-					} catch (_) {}
-					timers[ev.o.friendly_name] = setTimeout(() => {
-						console.log(`generating false event: ${ev.o.friendly_name}`)
-						mqtt.publish(`${MQTT_TOPIC}${ev.o.friendly_name}`, 'false')
-					}, conf.get('off_event_delay') * 1000)
-				}
-			})
+						let [topic, value] = gigasetEventMapper(ev)
+						mqtt.publish(topic, value)
+						console.log(`event sent as mqtt_topic: ${topic}, value: ${value}` )
+					}
+					catch (e) {console.log ('  event dropped: ' + e)}
+					
+					// publish a delayed 'false' event for motions sensors
+					if (ev.type == 'yc01.motion' || ev.type == 'movement') {
+						try {
+							clearTimeout(timers[ev.o.friendly_name]) // reset (delete) existing timer for motion sensor, if any
+						} catch (_) {}
+						timers[ev.o.friendly_name] = setTimeout(() => {
+							console.log(`generating false event: ${ev.o.friendly_name}`)
+							mqtt.publish(`${MQTT_TOPIC}${ev.o.friendly_name}`, 'false')
+						}, conf.get('off_event_delay') * 1000)
+					}
+				})
+			} catch (_) {console.error('check events | error parsing body:' + body)}
 		})
 	}
 	
@@ -113,19 +115,23 @@ const synchro = new events.EventEmitter()
 		
 		// actual status of sensors
 		request.get(URL_SENSORS, (_, __, body) => {
-			JSON.parse(body)[0].sensors.map(s => {
-				if (s.position_status != null) { // only for sensors that have a status
-					console.log(`sending actual state: ${s.friendly_name} | ${s.position_status}`)
-					mqtt.publish(`gigaset/${s.friendly_name}`, s.position_status == 'closed' ? 'false' : 'true')
-				}
-			})
+			try {
+				JSON.parse(body)[0].sensors.map(s => {
+					if (s.position_status != null) { // only for sensors that have a status
+						console.log(`sending actual state: ${s.friendly_name} | ${s.position_status}`)
+						mqtt.publish(`gigaset/${s.friendly_name}`, s.position_status == 'closed' ? 'false' : 'true')
+					}
+				})
+			} catch (_) {console.error('sensor actual status | error parsing body:' + body)}
 		})
 
 		// actual status of alarm mode
 		request.get(URL_SENSORS, (_, __, body) => {
-			let base = JSON.parse(body)[0]
-			console.log (`sending actual alarm mode: ${base.friendly_name} | ${base.intrusion_settings.active_mode}`)
-			mqtt.publish(`gigaset/${base.friendly_name}`, base.intrusion_settings.active_mode)
+			try {
+				let base = JSON.parse(body)[0]
+				console.log (`sending actual alarm mode: ${base.friendly_name} | ${base.intrusion_settings.active_mode}`)
+				mqtt.publish(`gigaset/${base.friendly_name}`, base.intrusion_settings.active_mode)
+			} catch (_) {console.error('alarm actual status | error parsing body:' + body)}
 		})
 	}
 
@@ -153,6 +159,7 @@ const synchro = new events.EventEmitter()
 			try {
 				res.redirect(JSON.parse(body).uri.rtsp)
 			} catch (_) {
+				console.error('live camera | error parsing body:' + body)
 				res.status(410).end()
 			}
 		})
@@ -166,11 +173,16 @@ const synchro = new events.EventEmitter()
 	// sensors
 	app.get('/sensors', (_, res) => {
 		request.get(URL_SENSORS, (_, __, body) => {
-			res.send(
-				JSON.parse(body)[0].sensors.map(s => {
-					return {name: s.friendly_name, status: s.status, position_status: s.position_status}
-				})
-			)
+			try {
+				res.send(
+					JSON.parse(body)[0].sensors.map(s => {
+						return {name: s.friendly_name, status: s.status, position_status: s.position_status}
+					})
+				)
+			} catch (_) {
+				console.error('sensors | error parsing body:' + body)
+				res.status(503).end()
+			}
 		})
 	})
 
@@ -183,7 +195,11 @@ const synchro = new events.EventEmitter()
 	// intrusion setting active mode (home, away...)
 	app.get('/intrusion_settings', (_, res) => {
 		request.get(URL_SENSORS, (_, __, body) => {
-			res.send(JSON.parse(body)[0].intrusion_settings.active_mode)
+			try {
+				res.send(JSON.parse(body)[0].intrusion_settings.active_mode)
+			} catch (_) {
+				console.error('intrusion settings | error parsing body:' + body)}
+				res.status(503).end()
 		})
 	})
 
