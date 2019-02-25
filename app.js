@@ -166,7 +166,7 @@ function handleParsingError(functionName, body)
 			try {
 				res.redirect(JSON.parse(body).uri.rtsp)
 			} catch (_) {
-				handleParsingError('live camera', body)}
+				handleParsingError('live camera', body)
 				res.status(410).end()
 			}
 		})
@@ -207,6 +207,7 @@ function handleParsingError(functionName, body)
 			} catch (_) {
 				handleParsingError('intrusion settings', body)
 				res.status(503).end()
+			}
 		})
 	})
 
