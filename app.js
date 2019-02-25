@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.4.3'
+const VERSION = 'v1.4.4'
 const MQTT_TOPIC = 'gigaset/'
 
 // gigaset-elements URLs
@@ -33,6 +33,13 @@ const synchro = new events.EventEmitter()
 		})
 		setTimeout(authorize, conf.get('auth_interval') * 60 * 1000)
 	}
+	authorize()
+}
+
+// log and try to recover from an unexpected gigaset response (ie. re-authorize)
+function handleParsingError(functionName, body)
+{
+	console.error(functionName + ' | unexpected gigaset response:' + body)
 	authorize()
 }
 
@@ -106,7 +113,7 @@ const synchro = new events.EventEmitter()
 						}, conf.get('off_event_delay') * 1000)
 					}
 				})
-			} catch (_) {console.error('check events | error parsing body:' + body)}
+			} catch (_) {handleParsingError('check events', body)}
 		})
 	}
 	
@@ -122,7 +129,7 @@ const synchro = new events.EventEmitter()
 						mqtt.publish(`gigaset/${s.friendly_name}`, s.position_status == 'closed' ? 'false' : 'true')
 					}
 				})
-			} catch (_) {console.error('sensor actual status | error parsing body:' + body)}
+			} catch (_) {handleParsingError('sensor actual status', body)}
 		})
 
 		// actual status of alarm mode
@@ -131,7 +138,7 @@ const synchro = new events.EventEmitter()
 				let base = JSON.parse(body)[0]
 				console.log (`sending actual alarm mode: ${base.friendly_name} | ${base.intrusion_settings.active_mode}`)
 				mqtt.publish(`gigaset/${base.friendly_name}`, base.intrusion_settings.active_mode)
-			} catch (_) {console.error('alarm actual status | error parsing body:' + body)}
+			} catch (_) {handleParsingError('alarm actual status', body)}
 		})
 	}
 
@@ -159,7 +166,7 @@ const synchro = new events.EventEmitter()
 			try {
 				res.redirect(JSON.parse(body).uri.rtsp)
 			} catch (_) {
-				console.error('live camera | error parsing body:' + body)
+				handleParsingError('live camera', body)}
 				res.status(410).end()
 			}
 		})
@@ -180,7 +187,7 @@ const synchro = new events.EventEmitter()
 					})
 				)
 			} catch (_) {
-				console.error('sensors | error parsing body:' + body)
+				handleParsingError('sensors', body)
 				res.status(503).end()
 			}
 		})
@@ -198,7 +205,7 @@ const synchro = new events.EventEmitter()
 			try {
 				res.send(JSON.parse(body)[0].intrusion_settings.active_mode)
 			} catch (_) {
-				console.error('intrusion settings | error parsing body:' + body)}
+				handleParsingError('intrusion settings', body)
 				res.status(503).end()
 		})
 	})

@@ -6,7 +6,7 @@ password: '****'
 port: 3000
 
 # re-authentication interval in minutes
-auth_interval: 60
+auth_interval: 10
 
 # check for new events every seconds
 check_events_interval: 10
