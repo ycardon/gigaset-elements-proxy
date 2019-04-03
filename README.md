@@ -108,10 +108,11 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - logging mqtt connection errors
 - basestation event now returns the mode of the alarm mode instead of true for home
 
-### v1.4.5 Happy new year (24 february 2019)
+### v1.4.6 Happy new year (24 february 2019)
 
 - fire an mqtt event when an alarm is trigered (true) or acknowledged (false)
 - better handling of parsing errors when gigaset API returns unexpected message (try to re-authorize)
+- added sensor type in the /sensors API
 
 ## credits
 

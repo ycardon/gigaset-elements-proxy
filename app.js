@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.4.5'
+const VERSION = 'v1.4.6'
 const MQTT_TOPIC = 'gigaset/'
 
 // gigaset-elements URLs
@@ -24,7 +24,7 @@ const synchro = new events.EventEmitter()
 {
 	// authorize every n minutes
 	function authorize(firstTime = true) {
-		console.info(`gigaset-element-provy ${VERSION} starting`)
+		if (firstTime) console.info(`gigaset-element-provy ${VERSION} starting`)
 		request.post(URL_LOGIN, {form: {email: conf.get('email'), password: conf.get('password')}}, () => {
 			request.get(URL_AUTH, () => {
 				console.info('authorized on gigaset cloud api')
@@ -183,7 +183,7 @@ function handleParsingError(functionName, body)
 			try {
 				res.send(
 					JSON.parse(body)[0].sensors.map(s => {
-						return {name: s.friendly_name, status: s.status, position_status: s.position_status}
+						return {name: s.friendly_name, type: s.type, status: s.status, position_status: s.position_status}
 					})
 				)
 			} catch (_) {
