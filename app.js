@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.4.6'
+const VERSION = 'v1.4.7'
 const MQTT_TOPIC = 'gigaset/'
 
 // gigaset-elements URLs
