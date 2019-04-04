@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // common
-const VERSION = 'v1.4.7'
+const VERSION = 'v1.5.0'
 const MQTT_TOPIC = 'gigaset/'
 
 // gigaset-elements URLs
@@ -78,6 +78,9 @@ function handleParsingError(functionName, body)
 			case 'sp01': // intrusion detected (or acknowledged), siren must turn on (or turn off)
 				if (event.type == 'on') return [topic, 'true']
 				else return [topic, 'false']
+
+			case 'sd01': // smoke detectors
+				return [topic, event.type]
 
 			default: // other events will be dropped
 				throw 'unhandled event type: ' + event.o.type 
