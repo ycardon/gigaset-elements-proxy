@@ -8,7 +8,7 @@ const events = require('events')
 const synchro = new events.EventEmitter()
 
 // common
-const VERSION = 'v1.5.0'
+const VERSION = 'v1.5.2'
 const MQTT_TOPIC = 'gigaset/'
 
 // gigaset-elements URLs
@@ -81,6 +81,10 @@ function handleParsingError(functionName, body)
 			case 'sd01': // smoke detectors
 				return [topic, event.type]
 
+			case undefined: // smoke detectors test session
+				if (event.type == 'end_sd1_test') return [topic, event.type]
+				// else skip to default
+
 			default: // other events will be dropped (unless stated in the config)
 				if (config('allow_unknown_events')) return [topic, event.type]
 				else throw 'unhandled event type: ' + event.o.type 
@@ -98,6 +102,7 @@ function handleParsingError(functionName, body)
 					// publish event
 					last_ts = parseInt(ev.ts) + 1
 					console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
+					console.debug('acquired event: ' + JSON.stringify(ev))
 					try {
 						let [topic, value] = gigasetEventMapper(ev)
 						mqtt.publish(topic, value)
