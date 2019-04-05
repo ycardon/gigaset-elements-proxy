@@ -1,5 +1,12 @@
 #!/usr/bin/env node
 
+// common libs
+require('console-stamp')(console, {colors: {stamp: 'grey', label: 'blue'}})
+const config = x => require('config').get(x)
+const request = require('request').defaults({jar: true}) // set to retain cookies
+const events = require('events')
+const synchro = new events.EventEmitter()
+
 // common
 const VERSION = 'v1.5.0'
 const MQTT_TOPIC = 'gigaset/'
@@ -12,26 +19,18 @@ const URL_EVENTS = URL_BASE + '/api/v2/me/events?from_ts='
 const URL_CAMERA = URL_BASE + '/api/v1/me/cameras/{id}/liveview/start'
 const URL_SENSORS = URL_BASE + '/api/v1/me/basestations'
 
-
-// common libs
-require('console-stamp')(console, {colors: {stamp: 'grey', label: 'blue'}})
-const conf = require('config')
-const request = require('request').defaults({jar: true}) // set to retain cookies
-const events = require('events')
-const synchro = new events.EventEmitter()
-
 // ------ AUTHORIZE ------
 {
 	// authorize every n minutes
 	function authorize(firstTime = true) {
 		if (firstTime) console.info(`gigaset-element-provy ${VERSION} starting`)
-		request.post(URL_LOGIN, {form: {email: conf.get('email'), password: conf.get('password')}}, () => {
+		request.post(URL_LOGIN, {form: {email: config('email'), password: config('password')}}, () => {
 			request.get(URL_AUTH, () => {
 				console.info('authorized on gigaset cloud api')
 				if (firstTime) synchro.emit('authorized')
 			})
 		})
-		if (firstTime) setTimeout(authorize, conf.get('auth_interval') * 60 * 1000)
+		if (firstTime) setTimeout(authorize, config('auth_interval') * 60 * 1000)
 	}
 	authorize()
 }
@@ -45,7 +44,7 @@ function handleParsingError(functionName, body)
 
 // ------ PUSH GIGASET EVENTS TO MQTT ------
 {
-	const mqtt = require('mqtt').connect(conf.get('mqtt_url'), conf.get('mqtt_options'))
+	const mqtt = require('mqtt').connect(config('mqtt_url'), config('mqtt_options'))
 	const timers = new Map() // each motion sensor event gets an attached timer
 	let last_ts = Date.now() // timestamp of the last emited event
 	
@@ -82,8 +81,9 @@ function handleParsingError(functionName, body)
 			case 'sd01': // smoke detectors
 				return [topic, event.type]
 
-			default: // other events will be dropped
-				throw 'unhandled event type: ' + event.o.type 
+			default: // other events will be dropped (unless stated in the config)
+				if (config('allow_unknown_events')) return [topic, event.type]
+				else throw 'unhandled event type: ' + event.o.type 
 		}
 	}
 	
@@ -113,7 +113,7 @@ function handleParsingError(functionName, body)
 						timers[ev.o.friendly_name] = setTimeout(() => {
 							console.log(`generating false event: ${ev.o.friendly_name}`)
 							mqtt.publish(`${MQTT_TOPIC}${ev.o.friendly_name}`, 'false')
-						}, conf.get('off_event_delay') * 1000)
+						}, config('off_event_delay') * 1000)
 					}
 				})
 			} catch (_) {handleParsingError('check events', body)}
@@ -148,7 +148,7 @@ function handleParsingError(functionName, body)
 	// once authorized, send initial states of the sensors and start the chekevents loop
 	synchro.once('authorized', ()=>{
 		setImmediate(sendActualStates)
-		setInterval(checkEvents, conf.get('check_events_interval') * 1000) // check again every n seconds
+		setInterval(checkEvents, config('check_events_interval') * 1000) // check again every n seconds
 	})
 }
 
@@ -165,7 +165,7 @@ function handleParsingError(functionName, body)
 
 	// live camera (redirect to a cloud-based RTSP stream)
 	app.get('/live', (_, res) => {
-		request.get(URL_CAMERA.replace('{id}', conf.get('camera_id')), (_, __, body) => {
+		request.get(URL_CAMERA.replace('{id}', config('camera_id')), (_, __, body) => {
 			try {
 				res.redirect(JSON.parse(body).uri.rtsp)
 			} catch (_) {
@@ -177,7 +177,7 @@ function handleParsingError(functionName, body)
 
 	// live camera (local MJPEG stream)
 	app.get('/live-local', (_, res) => {
-		request.get(`http://admin:${conf.get('camera_password')}@${conf.get('camera_ip')}/stream.jpg`).pipe(res)
+		request.get(`http://admin:${config('camera_password')}@${config('camera_ip')}/stream.jpg`).pipe(res)
 	})
 
 	// sensors
@@ -223,8 +223,8 @@ function handleParsingError(functionName, body)
 
 	// launch server, once authorized
 	synchro.once('authorized', () => {
-		app.listen(conf.get('port'), () => {
-			console.info(`server listening on http://localhost:${conf.get('port')}`)
+		app.listen(config('port'), () => {
+			console.info(`server listening on http://localhost:${config('port')}`)
 		})
 	})
 }

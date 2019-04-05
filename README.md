@@ -115,9 +115,10 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - better handling of parsing errors when gigaset API returns unexpected message (try to re-authorize)
 - added sensor type in the /sensors API
 
-### v1.5.0 Spring (4 april 2019)
+### v1.5.1 Spring (5 april 2019)
 
 - added `sd01` smoke detector sensors
+- added a new configuration parameter to allow or not the propagation of unknown gigaset events
 
 ## credits
 

@@ -14,6 +14,9 @@ check_events_interval: 10
 # send a delayed 'off' motion event after n seconds
 off_event_delay: 30
 
+# allow the propagation of unknown events
+allow_unknown_events: false
+
 # camera id (found with /api/v1/me/cameras)
 camera_id: 'xxxx'
 
