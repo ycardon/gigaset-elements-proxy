@@ -10,6 +10,7 @@ const synchro = new events.EventEmitter()
 // common
 const VERSION = 'v1.5.3'
 const MQTT_TOPIC = 'gigaset/'
+const MQTT_TOPIC_BATTERY_SUFFIX = '_battery'
 
 // gigaset-elements URLs
 const URL_LOGIN = 'https://im.gigaset-elements.de/identity/api/v1/user/login'
@@ -64,6 +65,9 @@ function handleParsingError(functionName, body)
 			
 			case 'end_sd01_test': // smoke detectors test session acknowledged
 				return [MQTT_TOPIC + event.o.basestationFriendlyName, event.type]
+
+			case 'battery_critical': // critical battery on sensor
+				return [topic + MQTT_TOPIC_BATTERY_SUFFIX, event.type]
 		}
 
 		// sensor events (based on sensor type)
