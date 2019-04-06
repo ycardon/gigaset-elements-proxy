@@ -62,7 +62,7 @@ function handleParsingError(functionName, body)
 			case 'isl01.bs01.intrusion_mode_loaded': // changed security mode
 				return [topic, event.o.modeAfter]
 			
-			case 'end_sd1_test': // smoke detectors test session acknowledged
+			case 'end_sd01_test': // smoke detectors test session acknowledged
 				return [MQTT_TOPIC + event.o.basestationFriendlyName, event.type]
 		}
 
@@ -101,8 +101,7 @@ function handleParsingError(functionName, body)
 					
 					// publish event
 					last_ts = parseInt(ev.ts) + 1
-					console.log(`acquired event: ${ev.o.friendly_name} | ${ev.o.type} | ${ev.type}`)
-					console.debug('acquired event: ' + JSON.stringify(ev))
+					console.log('acquired event: ' + JSON.stringify(ev))
 					try {
 						let [topic, value] = gigasetEventMapper(ev)
 						mqtt.publish(topic, value)
