@@ -8,7 +8,7 @@ const events = require('events')
 const synchro = new events.EventEmitter()
 
 // common
-const VERSION = 'v1.5.2'
+const VERSION = 'v1.5.3'
 const MQTT_TOPIC = 'gigaset/'
 
 // gigaset-elements URLs
@@ -57,12 +57,16 @@ function handleParsingError(functionName, body)
 	function gigasetEventMapper(event) {
 		let topic = MQTT_TOPIC + event.o.friendly_name
 
-		// base events : changed security mode
-		if (event.type == 'isl01.bs01.intrusion_mode_loaded') { 
-			return [topic, event.o.modeAfter]
+		// basestation events (based on event type)
+		switch (event.type) {
+			case 'isl01.bs01.intrusion_mode_loaded': // changed security mode
+				return [topic, event.o.modeAfter]
+			
+			case 'end_sd1_test': // smoke detectors test session acknowledged
+				return [MQTT_TOPIC + event.o.basestationFriendlyName, event.type]
 		}
 
-		// sensor events
+		// sensor events (based on sensor type)
 		switch (event.o.type) {
 			
 			case 'ds02': // door sensors
@@ -80,10 +84,6 @@ function handleParsingError(functionName, body)
 
 			case 'sd01': // smoke detectors
 				return [topic, event.type]
-
-			case undefined: // smoke detectors test session
-				if (event.type == 'end_sd1_test') return [topic, event.type]
-				// else skip to default
 
 			default: // other events will be dropped (unless stated in the config)
 				if (config('allow_unknown_events')) return [topic, event.type]
