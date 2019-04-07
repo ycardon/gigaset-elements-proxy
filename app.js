@@ -86,6 +86,7 @@ function handleError(functionName, error, body){
 			case 'sd01': // smoke detectors
 				if (event.type == 'smoke_detected') return [topic, 'alarm']
 				else if (event.type == 'test') return [topic, 'test']
+				else if (event.type == 'end_sd01_test') throw 'ignored event type: ' + event.type
 				else return [topic, 'default']
 
 			default: // other events will be dropped (unless stated in the config)
