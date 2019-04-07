@@ -69,8 +69,10 @@ gigaset sensor type             | gigaset event type                 | mqtt topi
 `sd01` smoke detector           | delayed after `test`               | `gigaset/<sensor name>`         | `default`
 `sd01` smoke detector           | `smoke_no_longer_detected`         | `gigaset/<sensor name>`         | `default`
 `sd01` smoke detector           | `end_sd01_smoke_detected`          | `gigaset/<sensor name>`         | `default`
+`sd01` smoke detector           | `end_sd01_test`                    | ignored                         |
 basestation: alarm mode changed | `isl01.bs01.intrusion_mode_loaded` | `gigaset/<base name>`           | `<new alarm mode>`
 any sensor                      | `battery_critical`                 | `gigaset/<sensor name>_battery` | `battery_critical`
+`allow_unknown_events` is true  | any other event                    | `gigaset/<sensor name>`         | `<gigaset event type>`
 
 ## Installation
 
@@ -137,7 +139,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - better handling of parsing errors when gigaset API returns unexpected message (try to re-authorize)
 - added sensor type in the /sensors API
 
-### v1.5.4 Spring (5 april 2019)
+### v1.5.5 Spring (5 april 2019)
 
 - added `sd01` smoke detector sensors
 - added a new configuration parameter to allow or not the propagation of unknown gigaset events

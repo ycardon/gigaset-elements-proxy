@@ -8,7 +8,7 @@ const events = require('events')
 const synchro = new events.EventEmitter()
 
 // common
-const VERSION = 'v1.5.3'
+const VERSION = 'v1.5.5'
 const MQTT_TOPIC = 'gigaset/'
 const MQTT_TOPIC_BATTERY_SUFFIX = '_battery'
 
@@ -118,7 +118,7 @@ function handleError(functionName, error, body){
 						publishDelayedEvent(ev, `false`, config('off_event_delay') * 1000)
 	
 					// publish a delayed 'default' event after a smoke detector test
-					if (ev.type == 'test' && event.o.type == 'sd01')
+					else if (ev.type == 'test' && ev.o.type == 'sd01')
 						publishDelayedEvent(ev, `default`, config('off_event_delay_after_smoke_detector_test') * 1000)
 				})
 			} catch (e) {handleError('check events', e, body)}
