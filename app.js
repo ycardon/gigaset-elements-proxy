@@ -37,9 +37,9 @@ const URL_SENSORS = URL_BASE + '/api/v1/me/basestations'
 }
 
 // log and try to recover from an unexpected gigaset response (ie. re-authorize)
-function handleParsingError(functionName, body)
-{
-	console.error(functionName + ' | unexpected gigaset response:' + body)
+function handleError(functionName, error, body){
+	console.error(functionName + ' | unexpected error:', error)
+	console.error(functionName + ' | gigaset response:' + body)
 	authorize(false)
 }
 
@@ -120,7 +120,7 @@ function handleParsingError(functionName, body)
 					if (ev.type == 'test' && event.o.type == 'sd01')
 						publishDelayedEvent(ev, `default`, config('off_event_delay_after_smoke_detector_test') * 1000)
 				})
-			} catch (_) {handleParsingError('check events', body)}
+			} catch (e) {handleError('check events', e, body)}
 		})
 
 		// publish a delayed event of @value after @delay seconds
@@ -148,7 +148,7 @@ function handleParsingError(functionName, body)
 						mqtt.publish(`gigaset/${s.friendly_name}`, s.position_status == 'closed' ? 'false' : 'true')
 					}
 				})
-			} catch (_) {handleParsingError('sensor actual status', body)}
+			} catch (e) {handleError('sensor actual status', e, body)}
 		})
 
 		// actual status of alarm mode
@@ -157,7 +157,7 @@ function handleParsingError(functionName, body)
 				let base = JSON.parse(body)[0]
 				console.log (`sending actual alarm mode: ${base.friendly_name} | ${base.intrusion_settings.active_mode}`)
 				mqtt.publish(`gigaset/${base.friendly_name}`, base.intrusion_settings.active_mode)
-			} catch (_) {handleParsingError('alarm actual status', body)}
+			} catch (e) {handleError('alarm actual status', e, body)}
 		})
 	}
 
@@ -184,8 +184,8 @@ function handleParsingError(functionName, body)
 		request.get(URL_CAMERA.replace('{id}', config('camera_id')), (_, __, body) => {
 			try {
 				res.redirect(JSON.parse(body).uri.rtsp)
-			} catch (_) {
-				handleParsingError('live camera', body)
+			} catch (e) {
+				handleError('live camera', e, body)
 				res.status(410).end()
 			}
 		})
@@ -205,8 +205,8 @@ function handleParsingError(functionName, body)
 						return {name: s.friendly_name, type: s.type, status: s.status, position_status: s.position_status}
 					})
 				)
-			} catch (_) {
-				handleParsingError('sensors', body)
+			} catch (e) {
+				handleError('sensors', e, body)
 				res.status(503).end()
 			}
 		})
@@ -223,8 +223,8 @@ function handleParsingError(functionName, body)
 		request.get(URL_SENSORS, (_, __, body) => {
 			try {
 				res.send(JSON.parse(body)[0].intrusion_settings.active_mode)
-			} catch (_) {
-				handleParsingError('intrusion settings', body)
+			} catch (e) {
+				handleError('intrusion settings', e, body)
 				res.status(503).end()
 			}
 		})
