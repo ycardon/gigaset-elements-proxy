@@ -63,9 +63,6 @@ function handleParsingError(functionName, body)
 			case 'isl01.bs01.intrusion_mode_loaded': // changed security mode
 				return [topic, event.o.modeAfter]
 			
-			case 'end_sd01_test': // smoke detectors test session acknowledged
-				return [MQTT_TOPIC + event.o.basestationFriendlyName, event.type]
-
 			case 'battery_critical': // critical battery on sensor
 				return [topic + MQTT_TOPIC_BATTERY_SUFFIX, event.type]
 		}
@@ -74,7 +71,7 @@ function handleParsingError(functionName, body)
 		switch (event.o.type) {
 			
 			case 'ds02': // door sensors
-			case 'ws02': // windows sensors
+			case 'ws02': // window sensors
 				if (event.type == 'close') return [topic, 'false']
 				else return [topic, 'true']
 			
@@ -87,7 +84,9 @@ function handleParsingError(functionName, body)
 				else return [topic, 'false']
 
 			case 'sd01': // smoke detectors
-				return [topic, event.type]
+				if (event.type == 'smoke_detected') return [topic, 'alarm']
+				else if (event.type == 'test') return [topic, 'test']
+				else return [topic, 'default']
 
 			default: // other events will be dropped (unless stated in the config)
 				if (config('allow_unknown_events')) return [topic, event.type]
@@ -113,19 +112,28 @@ function handleParsingError(functionName, body)
 					}
 					catch (e) {console.log ('  event dropped: ' + e)}
 					
-					// publish a delayed 'false' event for motions sensors
-					if (ev.type == 'yc01.motion' || ev.type == 'movement') {
-						try {
-							clearTimeout(timers[ev.o.friendly_name]) // reset (delete) existing timer for motion sensor, if any
-						} catch (_) {}
-						timers[ev.o.friendly_name] = setTimeout(() => {
-							console.log(`generating false event: ${ev.o.friendly_name}`)
-							mqtt.publish(`${MQTT_TOPIC}${ev.o.friendly_name}`, 'false')
-						}, config('off_event_delay') * 1000)
-					}
+					// publish a delayed 'false' event after motion is detected
+					if (ev.type == 'yc01.motion' || ev.type == 'movement') 
+						publishDelayedEvent(ev, `false`, config('off_event_delay') * 1000)
+	
+					// publish a delayed 'default' event after a smoke detector test
+					if (ev.type == 'test' && event.o.type == 'sd01')
+						publishDelayedEvent(ev, `default`, config('off_event_delay_after_smoke_detector_test') * 1000)
 				})
 			} catch (_) {handleParsingError('check events', body)}
 		})
+
+		// publish a delayed event of @value after @delay seconds
+		function publishDelayedEvent(ev, value, delay) {
+			try {
+				clearTimeout(timers[ev.o.friendly_name]); // reset (delete) existing timer for motion sensor, if any
+			}
+			catch (_) { }
+			timers[ev.o.friendly_name] = setTimeout(() => {
+				console.log(`delayed event sent as mqtt_topic: ${MQTT_TOPIC}${ev.o.friendly_name}, value: ${value}` )
+				mqtt.publish(`${MQTT_TOPIC}${ev.o.friendly_name}`, value);
+			}, delay);
+		}
 	}
 	
 	// send initial states of the sensors

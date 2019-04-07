@@ -49,6 +49,28 @@ Note that if you're reading this page on github, theses links does not work: you
 
 - pushes event to queue `gigaset/<sensor_friendly_name>` with `true` or `false` payload
 - motions events (movement detector and camera) automatically generate a delayed `false` event
+- smoke detector test events automatically generate a delayed `default` event
+
+gigaset sensor type             | gigaset event type                 | mqtt topic                      | mqtt value
+------------------------------- | ---------------------------------- | ------------------------------- | ----------------
+`ds02` door sensor              | `open`                             | `gigaset/<sensor name>`         | `true`
+`ds02` door sensor              | `close`                            | `gigaset/<sensor name>`         | `false`
+`ws02` window sensor            | `open`                             | `gigaset/<sensor name>`         | `true`
+`ws02` window sensor            | `tilt`                             | `gigaset/<sensor name>`         | `true`
+`ws02` window sensor            | `close`                            | `gigaset/<sensor name>`         | `false`
+`ps02` motion sensor            | `movement`                         | `gigaset/<sensor name>`         | `true`
+`ps02` motion sensor            | delayed after `movement`           | `gigaset/<sensor name>`         | `false`
+`ycam` motion sensor            | `yc01.motion`                      | `gigaset/<sensor name>`         | `true`
+`ycam` motion sensor            | delayed after `yc01.motion`        | `gigaset/<sensor name>`         | `false`
+`sp01` siren                    | `on`                               | `gigaset/<sensor name>`         | `true`
+`sp01` siren                    | `off`                              | `gigaset/<sensor name>`         | `false`
+`sd01` smoke detector           | `smoke_detected`                   | `gigaset/<sensor name>`         | `alarm`
+`sd01` smoke detector           | `test`                             | `gigaset/<sensor name>`         | `test`
+`sd01` smoke detector           | delayed after `test`               | `gigaset/<sensor name>`         | `default`
+`sd01` smoke detector           | `smoke_no_longer_detected`         | `gigaset/<sensor name>`         | `default`
+`sd01` smoke detector           | `end_sd01_smoke_detected`          | `gigaset/<sensor name>`         | `default`
+basestation: alarm mode changed | `isl01.bs01.intrusion_mode_loaded` | `gigaset/<base name>`           | `<new alarm mode>`
+any sensor                      | `battery_critical`                 | `gigaset/<sensor name>_battery` | `battery_critical`
 
 ## Installation
 
@@ -120,6 +142,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - added `sd01` smoke detector sensors
 - added a new configuration parameter to allow or not the propagation of unknown gigaset events
 - added `low battery` in the form of `topic: gigaset/<sensor name>_battery value: low_battery`
+- added an gigaset events to MQTT events table in the documentation (thanks to [@sracing](https://github.com/sracing))
 
 ## credits
 
@@ -131,4 +154,4 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
     - https://team-sik.org/sik-2016-046/
     - https://team-sik.org/sik-2016-047/
     - https://team-sik.org/sik-2016-048/
-- Thank you to https://github.com/h4nc, https://github.com/dotvav and https://github.com/sracing for their comments and suggestions
+- Thank you to [@h4nc](https://github.com/h4nc), [@dotvav](https://github.com/dotvav) and [@sracing](https://github.com/sracing) for their comments, suggestions and testing

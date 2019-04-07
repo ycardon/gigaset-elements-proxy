@@ -14,6 +14,10 @@ check_events_interval: 10
 # send a delayed 'off' motion event after n seconds
 off_event_delay: 30
 
+# send a delayed 'default' event n seconds after a smoke detector test
+# cf. https://github.com/ycardon/gigaset-elements-proxy/issues/11
+off_event_delay_after_smoke_detector_test: 300
+
 # allow the propagation of unknown events
 allow_unknown_events: false
 
