@@ -66,7 +66,7 @@ function publishDelayedEvent(topic:string, value:string, delay:number) {
     
     // set a new timer
     timers.set(topic, setTimeout(() => {
-        console.log('delayed event sent as mqtt_topic: ' + topic + 'value: ` + value')
+        console.log('delayed event sent as mqtt_topic: ' + topic + 'value:' + value)
         mqttClient.publish(topic, value);
     }, delay))
 }
