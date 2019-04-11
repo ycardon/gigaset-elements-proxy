@@ -35,7 +35,7 @@ export function checkEvents() {
                 try {
                     let [topic, value] = gigasetEventMapper(ev)
                     mqttClient.publish(topic!, value!) // TODO remove typecheck enforcement here
-                    console.log(`event sent as mqtt_topic: ${topic}, value: ${value}` )
+                    console.log('event sent as mqtt_topic: ' + topic + ', value: ' + value)
                 }
                 catch (e) {console.log ('  event dropped: ' + e)}
                 
@@ -66,7 +66,7 @@ function publishDelayedEvent(topic:string, value:string, delay:number) {
     
     // set a new timer
     timers.set(topic, setTimeout(() => {
-        console.log('delayed event sent as mqtt_topic: ' + topic + 'value:' + value)
+        console.log('delayed event sent as mqtt_topic: ' + topic + ', value:' + value)
         mqttClient.publish(topic, value);
     }, delay))
 }
