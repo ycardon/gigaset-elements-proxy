@@ -9,12 +9,12 @@
   ],
   "homepage": "https://github.com/ycardon/gigaset-elements-proxy",
   "bin": {
-    "ge-proxy": "./app.js"
+    "ge-proxy": "./dist/app.js"
   },
   "scripts": {
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc "
+    "build": "tsc"
   },
   "author": "Yann Cardon <ycardon@gmail.com>",
   "repository": "ycardon/gigaset-elements-proxy",
@@ -33,6 +33,7 @@
     "@types/config": "0.0.34",
     "@types/express": "^4.16.1",
     "@types/markdown-it": "0.0.7",
-    "@types/request": "^2.48.1"
+    "@types/request": "^2.48.1",
+    "source-map-support": "^0.5.12"
   }
 }
