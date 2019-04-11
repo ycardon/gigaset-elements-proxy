@@ -1,4 +1,4 @@
-import { eventer, conf } from './utils';
+import { conf } from './utils';
 import request = require('request')
 
 // a request wrapper that retains cookies
@@ -15,17 +15,16 @@ export enum GIGASET_URL {
 }
 
 /**
- * authorize every n minutes
+ * authorize on gigaset API
  */
-export function authorize(firstTime = true) {
+export function authorize(callback = ()=>{}) {
 	console.info('authorize on gigaset cloud api : starting')
 	gigasetRequest.post(GIGASET_URL.LOGIN, {form: {email: conf('email'), password: conf('password')}}, () => {
 		gigasetRequest.get(GIGASET_URL.AUTH, () => {
 			console.info('authorize on gigaset cloud api : done')
-			if (firstTime) eventer.emit(eventer.AUTHORIZED)
+			callback()
 		})
 	})
-	if (firstTime) setTimeout(authorize, conf('auth_interval') * 60 * 1000)
 }
 
 /**
@@ -36,5 +35,5 @@ export function authorize(firstTime = true) {
 export function handleGigasetError(functionName: string, error: object, body: string){
 	console.error(functionName + ' | unexpected error:', error)
 	console.error(functionName + ' | gigaset response:' + body)
-	authorize(false)
+	authorize()
 }
