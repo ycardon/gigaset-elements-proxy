@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
-import { eventer } from "./utils";
+import { eventer, conf } from "./utils";
 import { authorize } from "./gigaset";
 import { checkEvents, sendActualStates } from "./mqtt";
 import { startWebserver } from "./web-server";
 
 require('console-stamp')(console, {colors: {stamp: 'grey', label: 'blue'}})
+require('source-map-support').install()
+process.on('unhandledRejection', console.log)
 
 const VERSION = 'v2.0.0'
 
@@ -24,6 +26,6 @@ eventer.once(eventer.AUTHORIZED, ()=>{
 	// publish the actual gigaset states
 	setImmediate(sendActualStates)
 
-	// check for new incoming gigaset events to publish
-	setImmediate(checkEvents)
+	// check peridically for new incoming gigaset events to publish
+	setInterval(checkEvents, conf('check_events_interval') * 1000)
 })
