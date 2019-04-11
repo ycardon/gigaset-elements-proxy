@@ -146,6 +146,11 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 - added `low battery` in the form of `topic: gigaset/<sensor name>_battery value: low_battery`
 - added an gigaset events to MQTT events table in the documentation (thanks to [@sracing](https://github.com/sracing))
 
+### v2.0.0 Typescript (11 april 2019)
+
+- heavy code reorganization (moved to typescript, introduced modules)
+- no functionnality added
+
 ## credits
 
 - Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements (thank you !!)
