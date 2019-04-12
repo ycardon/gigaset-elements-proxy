@@ -34,11 +34,9 @@ app.get('/live-local', (_, res) => {
 app.get('/sensors', (_, res) => {
     gigasetRequest.get(GIGASET_URL.SENSORS, (_, __, body) => {
         try {
-            res.send(
-                JSON.parse(body)[0].sensors.map((s: gigasetBasestations.ISensorsItem) => {
-                    return { name: s.friendly_name, type: s.type, status: s.status, position_status: s.position_status }
-                })
-            )
+            res.send(JSON.parse(body)[0].sensors.map((s: gigasetBasestations.ISensorsItem) => {
+                return { name: s.friendly_name, type: s.type, status: s.status, position_status: s.position_status }}
+            ))
         } catch (e) {
             handleGigasetError('sensors', e, body)
             res.status(503).end()
