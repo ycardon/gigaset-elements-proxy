@@ -1,6 +1,6 @@
-import { gigasetRequest, handleGigasetError, GIGASET_URL } from "./gigaset"
-import { sendActualStates } from "./mqtt"
-import { conf } from "./utils"
+import { gigasetRequest, handleGigasetError, GIGASET_URL } from './gigaset'
+import { sendActualStates } from './mqtt'
+import { conf } from './utils'
 import fs = require('fs')
 import express = require('express')
 import markdownIt = require('markdown-it')
@@ -35,8 +35,8 @@ app.get('/sensors', (_, res) => {
     gigasetRequest.get(GIGASET_URL.SENSORS, (_, __, body) => {
         try {
             res.send(
-                JSON.parse(body)[0].sensors.map( (s:gigasetBasestations.ISensorsItem) => {
-                    return {name: s.friendly_name, type: s.type, status: s.status, position_status: s.position_status}
+                JSON.parse(body)[0].sensors.map((s: gigasetBasestations.ISensorsItem) => {
+                    return { name: s.friendly_name, type: s.type, status: s.status, position_status: s.position_status }
                 })
             )
         } catch (e) {
@@ -56,7 +56,7 @@ app.get('/force-refresh', (_, res) => {
 app.get('/intrusion_settings', (_, res) => {
     gigasetRequest.get(GIGASET_URL.SENSORS, (_, __, body) => {
         try {
-            let base:gigasetBasestations.IRootObjectItem = JSON.parse(body)[0]
+            let base: gigasetBasestations.IRootObjectItem = JSON.parse(body)[0]
             res.send(base.intrusion_settings.active_mode)
         } catch (e) {
             handleGigasetError('intrusion settings', e, body)

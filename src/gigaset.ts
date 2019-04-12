@@ -2,9 +2,10 @@ import { conf } from './utils'
 import request = require('request')
 
 // a request wrapper that retains cookies
-export const gigasetRequest = request.defaults({jar: true})
+export const gigasetRequest = request.defaults({ jar: true })
 
 // gigaset URLs
+// prettier-ignore
 export enum GIGASET_URL {
     LOGIN =   'https://im.gigaset-elements.de/identity/api/v1/user/login',
     BASE =    'https://api.gigaset-elements.de',
@@ -17,23 +18,23 @@ export enum GIGASET_URL {
 /**
  * authorize on gigaset API
  */
-export function authorize(callback = ()=>{}) {
-	console.info('authorize on gigaset cloud api : starting')
-	gigasetRequest.post(GIGASET_URL.LOGIN, {form: {email: conf('email'), password: conf('password')}}, () => {
-		gigasetRequest.get(GIGASET_URL.AUTH, () => {
-			console.info('authorize on gigaset cloud api : done')
-			callback()
-		})
-	})
+export function authorize(callback = () => {}) {
+    console.info('authorize on gigaset cloud api : starting')
+    gigasetRequest.post(GIGASET_URL.LOGIN, { form: { email: conf('email'), password: conf('password') } }, () => {
+        gigasetRequest.get(GIGASET_URL.AUTH, () => {
+            console.info('authorize on gigaset cloud api : done')
+            callback()
+        })
+    })
 }
 
 /**
  * log and try to recover from an unexpected gigaset response (ie. re-authorize)
- * 
+ *
  * @remarks the gigaset connection tokens are sometimes reset on gigaset side at unexpectable time
  */
-export function handleGigasetError(functionName: string, error: object, body: string){
-	console.error(functionName + ' | unexpected error:', error)
-	console.error(functionName + ' | gigaset response:' + body)
-	authorize()
+export function handleGigasetError(functionName: string, error: object, body: string) {
+    console.error(functionName + ' | unexpected error:', error)
+    console.error(functionName + ' | gigaset response:' + body)
+    authorize()
 }
