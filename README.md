@@ -2,9 +2,9 @@
 
 Is a very simple gateway to [gigaset-elements](https://www.gigaset.com/fr_fr/cms/objets-connectes-apercu.html) API:
 
-- periodic re-authentication
-- local proxy to the gigaset-elements APIs
-- gigaset-elements events are periodically fetched and pushed to a MQTT broker
+-   periodic re-authentication
+-   local proxy to the gigaset-elements APIs
+-   gigaset-elements events are periodically fetched and pushed to a MQTT broker
 
 As gigaset-elements does not provide local network APIs, I use it to access my equipement from https://home-assistant.io
 
@@ -15,64 +15,66 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 These are the API that are published on Gigaset Cloud, `gigaset-elements-proxy` only re-expose them locally without authentication.
 Note that if you're reading this page on github, theses links does not work: you have to install the project.
 
-- [basestations](/api/v1/me/basestations)
+-   [basestations](/api/v1/me/basestations)
 
-- [events](/api/v2/me/events)
-    - ?limit=
-    - ?group=
-    - ?from_ts= &to_ts=
+-   [events](/api/v2/me/events)
 
-- [cameras](/api/v1/me/cameras)
-    - /[id]/liveview/start
-    - /[id]/recording/[status|start|stop]
+    -   ?limit=
+    -   ?group=
+    -   ?from_ts= &to_ts=
 
-- [health](/api/v2/me/health)
+-   [cameras](/api/v1/me/cameras)
 
-- [notification settings](/api/v1/me/notifications/users/channels)
+    -   /[id]/liveview/start
+    -   /[id]/recording/[status|start|stop]
+
+-   [health](/api/v2/me/health)
+
+-   [notification settings](/api/v1/me/notifications/users/channels)
 
 ## Convenience APIs
 
 These extra APIs are based on raw Gigaset APIs and apply light treatment in order to make them easier to use in a 3rd party application.
 Note that if you're reading this page on github, theses links does not work: you have to install the project.
 
-- [live camera (redirect to a cloud-based RTSP stream)](/live): you have to set the camera id in the configuration file
+-   [live camera (redirect to a cloud-based RTSP stream)](/live): you have to set the camera id in the configuration file
 
-- [live camera (local MJPEG stream)](/live-local): you have set your camera local infos in the configuration file
+-   [live camera (local MJPEG stream)](/live-local): you have set your camera local infos in the configuration file
 
-- [sensors status](/sensors): online/offline and open/close/tilt status of the sensors and equipements
+-   [sensors status](/sensors): online/offline and open/close/tilt status of the sensors and equipements
 
-- [intrusion settings](/intrusion_settings): selected mode of the alarm system
+-   [intrusion settings](/intrusion_settings): selected mode of the alarm system
 
-- [force refresh](/force-refresh): send the actual status of the sensors and the alarm mode as mqtt events
+-   [force refresh](/force-refresh): send the actual status of the sensors and the alarm mode as mqtt events
 
 ## MQTT events
 
-- pushes event to queue `gigaset/<sensor_friendly_name>` with `true` or `false` payload
-- motions events (movement detector and camera) automatically generate a delayed `false` event
-- smoke detector test events automatically generate a delayed `default` event
+-   pushes event to queue `gigaset/<sensor_friendly_name>` with `true` or `false` payload
+-   motions events (movement detector and camera) automatically generate a delayed `false` event
+-   smoke detector test events automatically generate a delayed `default` event
 
-gigaset sensor type             | gigaset event type                 | mqtt topic                      | mqtt value
-------------------------------- | ---------------------------------- | ------------------------------- | ----------------
-`ds02` door sensor              | `open`                             | `gigaset/<sensor name>`         | `true`
-`ds02` door sensor              | `close`                            | `gigaset/<sensor name>`         | `false`
-`ws02` window sensor            | `open`                             | `gigaset/<sensor name>`         | `true`
-`ws02` window sensor            | `tilt`                             | `gigaset/<sensor name>`         | `true`
-`ws02` window sensor            | `close`                            | `gigaset/<sensor name>`         | `false`
-`ps02` motion sensor            | `movement`                         | `gigaset/<sensor name>`         | `true`
-`ps02` motion sensor            | delayed after `movement`           | `gigaset/<sensor name>`         | `false`
-`ycam` motion sensor            | `yc01.motion`                      | `gigaset/<sensor name>`         | `true`
-`ycam` motion sensor            | delayed after `yc01.motion`        | `gigaset/<sensor name>`         | `false`
-`sp01` siren                    | `on`                               | `gigaset/<sensor name>`         | `true`
-`sp01` siren                    | `off`                              | `gigaset/<sensor name>`         | `false`
-`sd01` smoke detector           | `smoke_detected`                   | `gigaset/<sensor name>`         | `alarm`
-`sd01` smoke detector           | `test`                             | `gigaset/<sensor name>`         | `test`
-`sd01` smoke detector           | delayed after `test`               | `gigaset/<sensor name>`         | `default`
-`sd01` smoke detector           | `smoke_no_longer_detected`         | `gigaset/<sensor name>`         | `default`
-`sd01` smoke detector           | `end_sd01_smoke_detected`          | `gigaset/<sensor name>`         | `default`
-`sd01` smoke detector           | `end_sd01_test`                    | ignored                         |
-basestation: alarm mode changed | `isl01.bs01.intrusion_mode_loaded` | `gigaset/<base name>`           | `<new alarm mode>`
-any sensor                      | `battery_critical`                 | `gigaset/<sensor name>_battery` | `battery_critical`
-`allow_unknown_events` is true  | any other event                    | `gigaset/<sensor name>`         | `<gigaset event type>`
+| gigaset sensor type             | gigaset event type                 | mqtt topic                      | mqtt value             |
+| ------------------------------- | ---------------------------------- | ------------------------------- | ---------------------- |
+| `ds02` door sensor              | `open`                             | `gigaset/<sensor name>`         | `true`                 |
+| `ds02` door sensor              | `close`                            | `gigaset/<sensor name>`         | `false`                |
+| `ws02` window sensor            | `open`                             | `gigaset/<sensor name>`         | `true`                 |
+| `ws02` window sensor            | `tilt`                             | `gigaset/<sensor name>`         | `true`                 |
+| `ws02` window sensor            | `close`                            | `gigaset/<sensor name>`         | `false`                |
+| `ps02` motion sensor            | `movement`                         | `gigaset/<sensor name>`         | `true`                 |
+| `ps02` motion sensor            | delayed after `movement`           | `gigaset/<sensor name>`         | `false`                |
+| `ycam` motion sensor            | `yc01.motion`                      | `gigaset/<sensor name>`         | `true`                 |
+| `ycam` motion sensor            | delayed after `yc01.motion`        | `gigaset/<sensor name>`         | `false`                |
+| `sp01` siren                    | `on`                               | `gigaset/<sensor name>`         | `true`                 |
+| `sp01` siren                    | `off`                              | `gigaset/<sensor name>`         | `false`                |
+| `sd01` smoke detector           | `smoke_detected`                   | `gigaset/<sensor name>`         | `alarm`                |
+| `sd01` smoke detector           | `test`                             | `gigaset/<sensor name>`         | `test`                 |
+| `sd01` smoke detector           | delayed after `test`               | `gigaset/<sensor name>`         | `default`              |
+| `sd01` smoke detector           | `smoke_no_longer_detected`         | `gigaset/<sensor name>`         | `default`              |
+| `sd01` smoke detector           | `end_sd01_smoke_detected`          | `gigaset/<sensor name>`         | `default`              |
+| `sd01` smoke detector           | `end_sd01_test`                    | ignored                         |                        |
+| basestation: alarm mode changed | `isl01.bs01.intrusion_mode_loaded` | `gigaset/<base name>`           | `<new alarm mode>`     |
+| any sensor                      | `battery_critical`                 | `gigaset/<sensor name>_battery` | `battery_critical`     |
+| `allow_unknown_events` is true  | any other event                    | `gigaset/<sensor name>`         | `<gigaset event type>` |
 
 ## Installation
 
@@ -84,7 +86,7 @@ from git (recommended if you have to customize the application to your needs)
 > git clone https://github.com/ycardon/gigaset-elements-proxy
 > cd gigaset-elements-proxy
 > npm install
-> vim config/default.yaml    
+> vim config/default.yaml
 > node app.js
 ```
 
@@ -109,56 +111,56 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 
 ## Restrictions
 
-- only read events and states from the Gigaset Cloud API, no writes (eg. cannot change the status of the alarm system)
-- track `ds02` (door sensors) `ws02`(window sensors) and `yc01` / `ps02`(movement and camera movement sensors) event types
-- since v1.4, track `sp01` (siren command event)
-- since v1.5, track `sd01` (smoke detector event)
+-   only read events and states from the Gigaset Cloud API, no writes (eg. cannot change the status of the alarm system)
+-   track `ds02` (door sensors) `ws02`(window sensors) and `yc01` / `ps02`(movement and camera movement sensors) event types
+-   since v1.4, track `sp01` (siren command event)
+-   since v1.5, track `sd01` (smoke detector event)
 
 ## Improvements
 
 ### v1.3.2 Halloween (1 november 2018)
 
-- when the server starts, send the actual status of the sensors and the alarm mode
-- added the `/force-refresh` API to send again the actual status of the sensors and the alarm mode
-- added `examples` directory
-- added `ws02` window sensors type
-- added `/intrusion_settings` API to monitor selected alarm mode
-- added handling of basestation events (selected alarm mode)
-- added more options to configue MQTT broker connections
-- fixed CVE in dependency
-- logging server version
+-   when the server starts, send the actual status of the sensors and the alarm mode
+-   added the `/force-refresh` API to send again the actual status of the sensors and the alarm mode
+-   added `examples` directory
+-   added `ws02` window sensors type
+-   added `/intrusion_settings` API to monitor selected alarm mode
+-   added handling of basestation events (selected alarm mode)
+-   added more options to configue MQTT broker connections
+-   fixed CVE in dependency
+-   logging server version
 
 ### v1.3.5 Armistice (11 november 2018)
 
-- logging mqtt connection errors
-- basestation event now returns the mode of the alarm mode instead of true for home
+-   logging mqtt connection errors
+-   basestation event now returns the mode of the alarm mode instead of true for home
 
 ### v1.4.6 Happy new year (24 february 2019)
 
-- fire an mqtt event when an alarm is trigered (true) or acknowledged (false)
-- better handling of parsing errors when gigaset API returns unexpected message (try to re-authorize)
-- added sensor type in the /sensors API
+-   fire an mqtt event when an alarm is trigered (true) or acknowledged (false)
+-   better handling of parsing errors when gigaset API returns unexpected message (try to re-authorize)
+-   added sensor type in the /sensors API
 
 ### v1.5.5 Spring (5 april 2019)
 
-- added `sd01` smoke detector sensors
-- added a new configuration parameter to allow or not the propagation of unknown gigaset events
-- added `low battery` in the form of `topic: gigaset/<sensor name>_battery value: low_battery`
-- added an gigaset events to MQTT events table in the documentation (thanks to [@sracing](https://github.com/sracing))
+-   added `sd01` smoke detector sensors
+-   added a new configuration parameter to allow or not the propagation of unknown gigaset events
+-   added `low battery` in the form of `topic: gigaset/<sensor name>_battery value: low_battery`
+-   added an gigaset events to MQTT events table in the documentation (thanks to [@sracing](https://github.com/sracing))
 
 ### v2.0.0 Typescript (11 april 2019)
 
-- heavy code reorganization (moved to typescript, introduced modules)
-- no functionnality added
+-   heavy code reorganization (moved to typescript, introduced modules)
+-   no functionnality added
 
 ## credits
 
-- Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements (thank you !!)
-- Security audits
-    - https://www.iot-tests.org/2017/01/testing-gigaset-elements-camera/
-    - https://team-sik.org/sik-2016-044/
-    - https://team-sik.org/sik-2016-045/
-    - https://team-sik.org/sik-2016-046/
-    - https://team-sik.org/sik-2016-047/
-    - https://team-sik.org/sik-2016-048/
-- Thank you to [@h4nc](https://github.com/h4nc), [@dotvav](https://github.com/dotvav) and [@sracing](https://github.com/sracing) for their comments, suggestions and testing
+-   Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements (thank you !!)
+-   Security audits
+    -   https://www.iot-tests.org/2017/01/testing-gigaset-elements-camera/
+    -   https://team-sik.org/sik-2016-044/
+    -   https://team-sik.org/sik-2016-045/
+    -   https://team-sik.org/sik-2016-046/
+    -   https://team-sik.org/sik-2016-047/
+    -   https://team-sik.org/sik-2016-048/
+-   Thank you to [@h4nc](https://github.com/h4nc), [@dotvav](https://github.com/dotvav) and [@sracing](https://github.com/sracing) for their comments, suggestions and testing
