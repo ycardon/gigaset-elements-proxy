@@ -1,6 +1,6 @@
-import { conf } from './utils';
-import { gigasetRequest, GIGASET_URL, handleGigasetError } from './gigaset';
-import { gigasetEventMapper } from './event-mapper';
+import { conf } from './utils'
+import { gigasetRequest, GIGASET_URL, handleGigasetError } from './gigaset'
+import { gigasetEventMapper } from './event-mapper'
 import mqtt = require('mqtt')
 
 // MQTT constants
@@ -62,12 +62,12 @@ function publishDelayedEvent(topic:string, value:string, delay:number) {
 
     // reset (delete) existing timer for motion sensor, if any
     let timer = timers.get(topic) 
-    if (timer !== undefined) clearTimeout(timer); 
+    if (timer !== undefined) clearTimeout(timer) 
     
     // set a new timer
     timers.set(topic, setTimeout(() => {
         console.log('delayed event sent as mqtt_topic: ' + topic + ', value:' + value)
-        mqttClient.publish(topic, value);
+        mqttClient.publish(topic, value)
     }, delay))
 }
 

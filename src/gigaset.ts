@@ -1,4 +1,4 @@
-import { conf } from './utils';
+import { conf } from './utils'
 import request = require('request')
 
 // a request wrapper that retains cookies

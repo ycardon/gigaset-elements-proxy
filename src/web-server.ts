@@ -1,6 +1,6 @@
-import { gigasetRequest, handleGigasetError, GIGASET_URL } from "./gigaset";
-import { sendActualStates } from "./mqtt";
-import { conf } from "./utils";
+import { gigasetRequest, handleGigasetError, GIGASET_URL } from "./gigaset"
+import { sendActualStates } from "./mqtt"
+import { conf } from "./utils"
 import fs = require('fs')
 import express = require('express')
 import markdownIt = require('markdown-it')

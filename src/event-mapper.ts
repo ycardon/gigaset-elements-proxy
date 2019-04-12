@@ -1,11 +1,12 @@
-import { conf } from './utils';
-import { MQTT } from './mqtt';
+import { conf } from './utils'
+import { MQTT } from './mqtt'
 
 /**
  * tell what mqtt topic and value a gigaset event should return
  * 
  * @param event - a gigaset event
  * @returns the corresponding [topic, value] pair
+ * @throws exceptions when the event has to be dropped
  */
 export function gigasetEventMapper(event:gigasetEvents.IEventsItem) {
 

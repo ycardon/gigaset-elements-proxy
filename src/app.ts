@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { eventer, conf } from "./utils";
-import { authorize } from "./gigaset";
-import { checkEvents, sendActualStates } from "./mqtt";
-import { startWebserver } from "./web-server";
+import { eventer, conf } from "./utils"
+import { authorize } from "./gigaset"
+import { checkEvents, sendActualStates } from "./mqtt"
+import { startWebserver } from "./web-server"
 
 require('console-stamp')(console, {colors: {stamp: 'grey', label: 'blue'}})
 require('source-map-support').install()
@@ -12,8 +12,10 @@ process.on('unhandledRejection', console.log)
 // gigaset-element-proxy current version
 const VERSION = 'v2.0.0'
 
+// --- MAIN LOOP ---
+
 // gigaset-element-proxy is starting
-console.info(`gigaset-element-provy ${VERSION} starting`)
+console.info('gigaset-element-provy ' + VERSION + ' is starting')
 
 // authorize on gigaset API
 authorize( () => eventer.emit(eventer.AUTHORIZED) )
