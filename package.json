@@ -15,7 +15,7 @@
         "start": "node app.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc",
-        "publish": "npm run build; npm publish"
+        "dev": "tsc && pm2 stop gigaset && node app.js && open 'http://localhost:3000'"
     },
     "author": "Yann Cardon <ycardon@gmail.com>",
     "repository": "ycardon/gigaset-elements-proxy",
