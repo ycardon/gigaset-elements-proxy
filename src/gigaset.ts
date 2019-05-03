@@ -1,4 +1,4 @@
-import { conf } from './utils'
+import { conf, Cache } from './utils'
 import request = require('request')
 
 
@@ -15,10 +15,20 @@ export enum GIGASET_URL {
 
 // a request caching wrapper
 class RequestCachingWrapper {
+    private cache = new Cache()
     constructor(readonly request: any) {}
-    get(uri: string, cb?: request.RequestCallback): request.Request {
+    get(uri: string): request.Request {
+        return this.request.get(uri)
+    }
+    get(uri: string, cb: request.RequestCallback): string {
         console.log('GET ' + uri)
-        return this.request.get(uri, cb)
+        let cachedValue = this.cache.get(uri)
+        if (cachedValue) return cachedValue
+        else {
+            let value = this.request.get(uri, cb)
+            this.cache.set(uri, value)
+            return value
+        }
     }
     post(uri: string, options: request.CoreOptions, cb: request.RequestCallback) : request.Request {
         return this.request.post(uri, options, cb)
