@@ -41,7 +41,10 @@ Note that if you're reading this page on github, theses links does not work: you
 
 -   [live camera (local MJPEG stream)](/live-local): you have set your camera local infos in the configuration file
 
--   [sensors status](/sensors): online/offline and open/close/tilt status of the sensors and equipements
+-   [all sensors status](/sensors): online/offline and open/close/tilt status of all the sensors
+
+-   [specific sensor status](/sensors/<sensor-friendly-name>): online/offline and open/close/tilt status of one sensor
+
 
 -   [intrusion settings](/intrusion_settings): selected mode of the alarm system
 
@@ -152,6 +155,10 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 
 -   heavy code reorganization (moved to typescript, introduced modules)
 -   no functionnality added
+
+### v2.1.0 Labour Day (1 may 2019)
+
+-   added a new API: `sensors/<sensor-friendly-name>` to ease treatment from home-assistant
 
 ## credits
 

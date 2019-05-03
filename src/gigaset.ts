@@ -1,6 +1,5 @@
-import { conf, Cache } from './utils'
+import { conf } from './utils'
 import request = require('request')
-
 
 // gigaset URLs
 // prettier-ignore
@@ -13,30 +12,8 @@ export enum GIGASET_URL {
     SENSORS = 'https://api.gigaset-elements.de/api/v1/me/basestations'
 }
 
-// a request caching wrapper
-class RequestCachingWrapper {
-    private cache = new Cache()
-    constructor(readonly request: any) {}
-    get(uri: string): request.Request {
-        return this.request.get(uri)
-    }
-    get(uri: string, cb: request.RequestCallback): string {
-        console.log('GET ' + uri)
-        let cachedValue = this.cache.get(uri)
-        if (cachedValue) return cachedValue
-        else {
-            let value = this.request.get(uri, cb)
-            this.cache.set(uri, value)
-            return value
-        }
-    }
-    post(uri: string, options: request.CoreOptions, cb: request.RequestCallback) : request.Request {
-        return this.request.post(uri, options, cb)
-    }
-}
-
 // a request wrapper that retains cookies
-export const gigasetRequest = new RequestCachingWrapper(request.defaults({ jar: true }))
+export const gigasetRequest = request.defaults({ jar: true })
 
 /**
  * authorize on gigaset API

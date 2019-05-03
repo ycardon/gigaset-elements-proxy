@@ -9,7 +9,7 @@ require('console-stamp')(console, { colors: { stamp: 'grey', label: 'blue' } });
 require('source-map-support').install();
 process.on('unhandledRejection', console.log);
 // gigaset-element-proxy current version
-const VERSION = 'v2.0.0';
+const VERSION = 'v2.1.0';
 // --- MAIN LOOP ---
 // gigaset-element-proxy is starting
 console.info('gigaset-element-provy ' + VERSION + ' is starting');
