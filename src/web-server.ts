@@ -5,6 +5,9 @@ import fs = require('fs')
 import express = require('express')
 import markdownIt = require('markdown-it')
 
+// returns the 1st element of the array if the test is true, otherwise returns the array
+const flatIf = <T>(test: boolean, a: T[])  => test ? a[0] : a
+
 // a web-server
 const app = express()
 
@@ -30,18 +33,20 @@ app.get('/live-local', (_, res) => {
     gigasetRequest.get('http://admin:' + conf('camera_password') + '@' + conf('camera_ip') + '/stream.jpg').pipe(res)
 })
 
-// set the route: sensors
-app.get('/sensors', (_, res) => {
+// set the route: sensors and sensors/id
+app.get(['/sensors', '/sensors/:id'], (req, res) => {
     gigasetRequest.get(GIGASET_URL.SENSORS, (_, __, body) => {
         try {
-            res.send(JSON.parse(body)[0].sensors.map((s: gigasetBasestations.ISensorsItem) => {
-                return { 
-                    name: s.friendly_name,
-                    type: s.type,
-                    status: s.status,
-                    battery: s.battery != undefined ? s.battery.state : undefined, 
-                    position_status: s.position_status
-                }}
+            res.send(flatIf(req.params.id, (JSON.parse(body)[0].sensors as gigasetBasestations.ISensorsItem[])
+                .filter(s => req.params.id ? (s.friendly_name == req.params.id) : true)
+                .map(s => {
+                    return {
+                        name: s.friendly_name,
+                        type: s.type,
+                        status: s.status,
+                        battery: s.battery != undefined ? s.battery.state : undefined,
+                        position_status: s.position_status
+                }})
             ))
         } catch (e) {
             handleGigasetError('sensors', e, body)
