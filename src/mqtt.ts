@@ -85,11 +85,17 @@ export function sendActualStates() {
             JSON.parse(body)[0].sensors.map((s: gigasetBasestations.ISensorsItem) => {
 
                 // only for sensors that have a status
-                if (s.position_status != null) {
+                if (s.position_status) {
 
                     // publish status
                     console.log(`sending actual state: ${s.friendly_name} | ${s.position_status}`)
                     mqttClient.publish(`gigaset/${s.friendly_name}`, s.position_status == 'closed' ? 'false' : 'true')
+                }
+
+                // smoke detector status, sending 'default' value
+                else if (s.type == 'sd01') {
+                    console.log(`sending actual state: ${s.friendly_name} | default`)
+                    mqttClient.publish(`gigaset/${s.friendly_name}`, 'default')
                 }
             })
 

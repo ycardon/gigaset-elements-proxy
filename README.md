@@ -156,9 +156,10 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 -   heavy code reorganization (moved to typescript, introduced modules)
 -   no functionnality added
 
-### v2.1.0 Labour Day (1 may 2019)
+### v2.1.1 Labour Day (1 may 2019)
 
 -   added a new API: `sensors/<sensor-friendly-name>` to ease treatment from home-assistant
+-   now return initial state of smoke detectors (cf. this [issue](https://github.com/ycardon/gigaset-elements-proxy/issues/11#))
 
 ## credits
 
