@@ -5,8 +5,11 @@ import fs = require('fs')
 import express = require('express')
 import markdownIt = require('markdown-it')
 
-// returns the 1st element of the array if the test is true, otherwise returns the array
-const flatIf = <T>(test: boolean, a: T[])  => test ? a[0] : a
+// returns the 1st element of the array if the array contains only 1 element, otherwise construct a map indexed with the name attribute
+const makeObject = <T extends ReadonlyMap<string, any>>(a: T[]) => (a.length < 2) ? a[0] : a.reduce(
+    (prev, cur) => prev.set(cur.get("name"), cur),
+    new Map<string, T>()
+)
 
 // a web-server
 const app = express()
@@ -37,7 +40,7 @@ app.get('/live-local', (_, res) => {
 app.get(['/sensors', '/sensors/:id'], (req, res) => {
     gigasetRequest.get(GIGASET_URL.SENSORS, (_, __, body) => {
         try {
-            res.send(flatIf(req.params.id, (JSON.parse(body)[0].sensors as gigasetBasestations.ISensorsItem[])
+            let sensors = (JSON.parse(body)[0].sensors as gigasetBasestations.ISensorsItem[])
                 .filter(s => req.params.id ? (s.friendly_name == req.params.id) : true)
                 .map(s => {
                     return {
@@ -45,9 +48,17 @@ app.get(['/sensors', '/sensors/:id'], (req, res) => {
                         type: s.type,
                         status: s.status,
                         battery: s.battery != undefined ? s.battery.state : undefined,
-                        position_status: s.position_status
-                }})
-            ))
+                        position_status: s.position_status,
+                        href: '/sensors/' + s.friendly_name,
+                }}
+            )
+
+            // multiple sensors, construct a new object indexed with the name of the sensor /or/ return the only sensor
+            if (sensors.length > 1)
+                res.send(sensors.reduce((prev: any, cur) => {prev[cur.name] = cur; return prev}, {}))
+            else
+                res.send(sensors[0])
+
         } catch (e) {
             handleGigasetError('sensors', e, body)
             res.status(503).end()

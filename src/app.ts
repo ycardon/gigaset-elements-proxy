@@ -10,7 +10,7 @@ require('source-map-support').install()
 process.on('unhandledRejection', console.log)
 
 // gigaset-element-proxy current version
-const VERSION = 'v2.1.1'
+const VERSION = 'v2.1.2'
 
 // --- MAIN LOOP ---
 
@@ -22,7 +22,7 @@ authorize(() => eventer.emit(eventer.AUTHORIZED))
 
 // once authorized
 eventer.once(eventer.AUTHORIZED, () => {
-    //
+
     // start the local proxy
     setImmediate(startWebserver)
 
