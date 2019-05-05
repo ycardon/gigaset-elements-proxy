@@ -50,8 +50,7 @@ app.get(['/sensors', '/sensors/:id'], (req, res) => {
                         battery: s.battery != undefined ? s.battery.state : undefined,
                         position_status: s.position_status,
                         href: '/sensors/' + s.friendly_name,
-                }}
-            )
+                }})
 
             // multiple sensors, construct a new object indexed with the name of the sensor /or/ return the only sensor
             if (sensors.length > 1)
