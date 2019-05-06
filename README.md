@@ -10,7 +10,7 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 
 [![Known Vulnerabilities](https://snyk.io/test/github/ycardon/gigaset-elements-proxy/badge.svg)](https://snyk.io/test/github/ycardon/gigaset-elements-proxy)
 
-## Raw Gigaset APIs
+## raw Gigaset APIs
 
 These are the API that are published on Gigaset Cloud, `gigaset-elements-proxy` only re-expose them locally without authentication.
 Note that if you're reading this page on github, theses links does not work: you have to install the project.
@@ -32,7 +32,7 @@ Note that if you're reading this page on github, theses links does not work: you
 
 -   [notification settings](/api/v1/me/notifications/users/channels)
 
-## Convenience APIs
+## convenience APIs
 
 These extra APIs are based on raw Gigaset APIs and apply light treatment in order to make them easier to use in a 3rd party application.
 Note that if you're reading this page on github, theses links does not work: you have to install the project.
@@ -79,7 +79,7 @@ Note that if you're reading this page on github, theses links does not work: you
 | any sensor                      | `battery_critical`                 | `gigaset/<sensor name>_battery` | `battery_critical`     |
 | `allow_unknown_events` is true  | any other event                    | `gigaset/<sensor name>`         | `<gigaset event type>` |
 
-## Installation
+## installation
 
 `npm` package is required.
 
@@ -112,14 +112,14 @@ You can get extra help on this [home-assistant community topic](https://communit
 
 You can also check https://github.com/lorenwest/node-config/wiki/Configuration-Files
 
-## Restrictions
+## restrictions
 
 -   only read events and states from the Gigaset Cloud API, no writes (eg. cannot change the status of the alarm system)
 -   track `ds02` (door sensors) `ws02`(window sensors) and `yc01` / `ps02`(movement and camera movement sensors) event types
 -   since v1.4, track `sp01` (siren command event)
 -   since v1.5, track `sd01` (smoke detector event)
 
-## Improvements
+## improvements
 
 ### v1.3.2 Halloween (1 november 2018)
 
