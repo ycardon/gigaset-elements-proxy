@@ -174,3 +174,19 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
     -   https://team-sik.org/sik-2016-047/
     -   https://team-sik.org/sik-2016-048/
 -   Thank you to [@h4nc](https://github.com/h4nc), [@dotvav](https://github.com/dotvav) and [@sracing](https://github.com/sracing) for their comments, suggestions and testing
+
+## building the project
+
+-   run
+```
+    > git clone https://github.com/ycardon/gigaset-elements-proxy
+    > npm install
+```
+-   code new stuff
+-   update version in `./package.json`
+-   run either
+```
+    > npm run build
+    > npm run dev
+    > npm run publish
+```
