@@ -4,13 +4,14 @@ import { eventer, conf } from './utils'
 import { authorize } from './gigaset'
 import { checkEvents, sendActualStates } from './mqtt'
 import { startWebserver } from './web-server'
+import { environment } from './environment/environment';
 
 require('console-stamp')(console, { colors: { stamp: 'grey', label: 'blue' } })
 require('source-map-support').install()
 process.on('unhandledRejection', console.log)
 
 // gigaset-element-proxy current version
-const VERSION = 'v2.1.2'
+const VERSION = environment.version
 
 // --- MAIN LOOP ---
 

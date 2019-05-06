@@ -5,12 +5,6 @@ import fs = require('fs')
 import express = require('express')
 import markdownIt = require('markdown-it')
 
-// returns the 1st element of the array if the array contains only 1 element, otherwise construct a map indexed with the name attribute
-const makeObject = <T extends ReadonlyMap<string, any>>(a: T[]) => (a.length < 2) ? a[0] : a.reduce(
-    (prev, cur) => prev.set(cur.get("name"), cur),
-    new Map<string, T>()
-)
-
 // a web-server
 const app = express()
 
