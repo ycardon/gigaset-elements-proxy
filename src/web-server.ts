@@ -35,7 +35,8 @@ app.get(['/sensors', '/sensors/:id'], (req, res) => {
     gigasetRequest.get(GIGASET_URL.SENSORS, (_, __, body) => {
         try {
             let sensors = (JSON.parse(body)[0].sensors as gigasetBasestations.ISensorsItem[])
-                .filter(s => req.params.id ? (s.friendly_name == req.params.id) : true)
+                .filter(s => req.params.id ? (s.friendly_name == req.params.id) : true) // match the id if provided
+                .filter(s => s.type != 'hb01.hl01' && s.type != 'hb01') // filter out Philips Hue basestation and lights
                 .map(s => {
                     return {
                         name: s.friendly_name,
@@ -46,7 +47,7 @@ app.get(['/sensors', '/sensors/:id'], (req, res) => {
                         href: '/sensors/' + s.friendly_name,
                 }})
 
-            // multiple sensors, construct a new object indexed with the name of the sensor /or/ return the only sensor
+            // on multiple sensors, construct a new object indexed with the name of the sensor ELSE return the only sensor
             if (sensors.length > 1)
                 res.send(sensors.reduce((prev: any, cur) => {prev[cur.name] = cur; return prev}, {}))
             else

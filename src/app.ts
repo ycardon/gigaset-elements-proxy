@@ -16,7 +16,7 @@ const VERSION = environment.version
 // --- MAIN LOOP ---
 
 // gigaset-element-proxy is starting
-console.info('gigaset-element-provy ' + VERSION + ' is starting')
+console.info('gigaset-element-proxy v' + VERSION + ' is starting')
 
 // authorize on gigaset API
 authorize(() => eventer.emit(eventer.AUTHORIZED))
