@@ -12,13 +12,19 @@ console.info('> replacing version in:')
 console.log(replace.sync({
     files: 'README.md',
     from: /# gigaset-elements-proxy v(.*)/g,
-    to: '# gigaset-elements-proxy v' + version,
+    to:   '# gigaset-elements-proxy v' + version,
 }))
 
 console.log(replace.sync({
-    files: 'src/environment/environment.ts',
+    files: 'src/environment/environment.ts', 
     from: /version: '(.*)'/g,
-    to: 'version: \''+ version + '\'',
+    to:   'version: \''+ version + '\'',
+}))
+
+console.log(replace.sync({
+    files: 'package-lock.json', 
+    from: /"version": "(.*)"/,
+    to:   '"version": "'+ version + '"',
 }))
 
 console.info('> buiding done')

@@ -1,4 +1,4 @@
-# gigaset-elements-proxy v2.1.5
+# gigaset-elements-proxy v2.1.6
 
 Is a very simple gateway to [gigaset-elements](https://www.gigaset.com/fr_fr/cms/objets-connectes-apercu.html) API:
 
@@ -162,7 +162,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 -   now return initial state of smoke detectors (cf. this [issue](https://github.com/ycardon/gigaset-elements-proxy/issues/11#))
 -   API `sensors/` no longer returns a array of objects but a plain object indexed with the sensor's friendly name
 -   now using a proper build system for the project
--   filtering out the Philips Hue devices in the `sensor/` API
+-   filtering out the Philips Hue devices in the `sensors/` API
 
 ## credits
 
