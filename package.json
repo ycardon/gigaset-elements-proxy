@@ -1,6 +1,6 @@
 {
     "name": "gigaset-elements-proxy",
-    "version": "2.1.6",
+    "version": "2.1.7",
     "description": "a simple web and mqtt local gateway for reaching gigaset-elements API",
     "keywords": [
         "gigaset-elements",
@@ -27,6 +27,7 @@
         "js-yaml": "^3.13.1",
         "markdown-it": "^8.4.2",
         "mqtt": "^2.18.8",
+        "mqtt-packet": "^6.1.2",
         "request": "^2.88.0"
     },
     "preferGlobal": true,
