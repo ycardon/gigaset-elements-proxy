@@ -1,6 +1,6 @@
 {
     "name": "gigaset-elements-proxy",
-    "version": "2.1.7",
+    "version": "2.1.8",
     "description": "a simple web and mqtt local gateway for reaching gigaset-elements API",
     "keywords": [
         "gigaset-elements",
@@ -22,21 +22,22 @@
     "license": "ISC",
     "dependencies": {
         "config": "^3.1.0",
-        "console-stamp": "^0.2.7",
-        "express": "^4.16.4",
+        "console-stamp": "^0.2.9",
+        "express": "^4.17.1",
         "js-yaml": "^3.13.1",
         "markdown-it": "^8.4.2",
         "mqtt": "^2.18.8",
-        "mqtt-packet": "^6.1.2",
+        "mqtt-packet": "^6.2.0",
         "request": "^2.88.0"
     },
     "preferGlobal": true,
     "devDependencies": {
         "@types/config": "0.0.34",
-        "@types/express": "^4.16.1",
-        "@types/markdown-it": "0.0.7",
+        "@types/express": "^4.17.0",
+        "@types/markdown-it": "0.0.8",
         "@types/request": "^2.48.1",
-        "replace-in-file": "^4.0.0",
-        "source-map-support": "^0.5.12"
+        "replace-in-file": "^4.1.1",
+        "source-map-support": "^0.5.12",
+        "typescript": "^3.5.2"
     }
 }
