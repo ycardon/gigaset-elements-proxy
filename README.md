@@ -80,9 +80,18 @@ Note that if you're reading this page on github, theses links does not work: you
 
 ## installation
 
-`npm` package is required.
+### option 1 - as a Hassio addon
 
-from git (recommended if you have to customize the application to your needs)
+point to this custom repository
+
+```txt
+https://github.com/ycardon/hassio-addons
+```
+
+### option 2 - from git 
+
+- (recommended if you have to customize the application to your needs)
+- nodejs is required
 
 ```
 > git clone https://github.com/ycardon/gigaset-elements-proxy
@@ -92,7 +101,7 @@ from git (recommended if you have to customize the application to your needs)
 > node app.js
 ```
 
-from npm
+### option 3 - from npm
 
 ```
 install
@@ -104,6 +113,8 @@ locate then edit config/default.yaml with
 run
 > ge-proxy
 ```
+
+### then
 
 Have a look on the `examples` directory for instructions on creating a service or configure the sensors inside home-assistant
 
@@ -162,6 +173,11 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 -   API `sensors/` no longer returns a array of objects but a plain object indexed with the sensor's friendly name
 -   now using a proper build system for the project
 -   filtering out the Philips Hue devices in the `sensors/` API
+
+### v2.2.0 Hassio (24 sept 2019)
+
+-   can now be installed as an Hassio Addon
+-   _breaking change_ REST API port is now 8094 (and not 3000 as it used to be), can be changed in `config/default.yaml`
 
 ## credits
 
