@@ -1,4 +1,4 @@
-# gigaset-elements-proxy v2.1.7
+# gigaset-elements-proxy v2.1.8
 
 Is a very simple gateway to [gigaset-elements](https://www.gigaset.com/fr_fr/cms/objets-connectes-apercu.html) API:
 
@@ -15,40 +15,39 @@ As gigaset-elements does not provide local network APIs, I use it to access my e
 These are the API that are published on Gigaset Cloud, `gigaset-elements-proxy` only re-expose them locally without authentication.
 Note that if you're reading this page on github, theses links does not work: you have to install the project.
 
--   [basestations](/api/v1/me/basestations)
+-   [basestations](api/v1/me/basestations)
 
--   [events](/api/v2/me/events)
+-   [events](api/v2/me/events)
 
     -   ?limit=
     -   ?group=
     -   ?from_ts= &to_ts=
 
--   [cameras](/api/v1/me/cameras)
+-   [cameras](api/v1/me/cameras)
 
     -   /[id]/liveview/start
     -   /[id]/recording/[status|start|stop]
 
--   [health](/api/v2/me/health)
+-   [health](api/v2/me/health)
 
--   [notification settings](/api/v1/me/notifications/users/channels)
+-   [notification settings](api/v1/me/notifications/users/channels)
 
 ## convenience APIs
 
 These extra APIs are based on raw Gigaset APIs and apply light treatment in order to make them easier to use in a 3rd party application.
 Note that if you're reading this page on github, theses links does not work: you have to install the project.
 
--   [live camera (redirect to a cloud-based RTSP stream)](/live): you have to set the camera id in the configuration file
+-   [live camera (redirect to a cloud-based RTSP stream)](live): you have to set the camera id in the configuration file
 
--   [live camera (local MJPEG stream)](/live-local): you have set your camera local infos in the configuration file
+-   [live camera (local MJPEG stream)](live-local): you have set your camera local infos in the configuration file
 
--   [all sensors status](/sensors): online/offline and open/close/tilt status of all the sensors
+-   [all sensors status](sensors): online/offline and open/close/tilt status of all the sensors
 
--   [specific sensor status](/sensors/<sensor-friendly-name>): online/offline and open/close/tilt status of one sensor
+-   [specific sensor status](sensors/<sensor-friendly-name>): online/offline and open/close/tilt status of one sensor
 
+-   [intrusion settings](intrusion_settings): selected mode of the alarm system
 
--   [intrusion settings](/intrusion_settings): selected mode of the alarm system
-
--   [force refresh](/force-refresh): send the actual status of the sensors and the alarm mode as mqtt events
+-   [force refresh](force-refresh): send the actual status of the sensors and the alarm mode as mqtt events
 
 ## MQTT events
 

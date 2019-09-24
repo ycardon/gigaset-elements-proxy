@@ -3,7 +3,7 @@ email:    'me@mail.org'
 password: '****'
 
 # port gigaset-server is running on
-port: 3000
+port: 8094
 
 # re-authentication interval in minutes
 auth_interval: 10
