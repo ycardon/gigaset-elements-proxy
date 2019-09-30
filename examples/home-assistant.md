@@ -25,10 +25,21 @@ sensor:
     name: "Gigaset Alarm Mode"
 ```
 
-create a binary sensor from the alarm mode
+other sensor examples
 
 ```yaml
+sensor:
+
+  # health of the system (as string)
+  - platform: rest 
+      name: gigaset_health
+      scan_interval: '15'
+      resource: http://localhost:8094/api/v2/me/health
+      value_template: '{{ value_json.system_health }}'
+
 binary_sensor:
+
+  # a binary sensor from the alarm mode
   - platform: template
     sensors:
       gigaset_alarm_mode_enabled: 
@@ -36,6 +47,21 @@ binary_sensor:
           {{ is_state('sensor.gigaset_alarm_mode', 'night') 
               or is_state('sensor.gigaset_alarm_mode', 'away')
               or is_state('sensor.gigaset_alarm_mode', 'custom') }}
+
+  # avaliability of the system
+  - platform: rest
+    name: gigaset_availability # Online/Offline
+    scan_interval: '60' # 15
+    resource: http://localhost:8094/api/v1/me/basestations
+    value_template: "{{ value_json[0].status == 'online' }}"
+
+  # battery check for one device 
+  - platform: rest
+    name: gigaset_kitchen_battery
+    scan_interval: '300' # sec
+    resource: http://localhost:8094/sensors
+    value_template: "{{ value_json.Kitchen.battery != 'ok' }}"
+    device_class: battery
 ```
 
 ## force the sensors update when home-assistant starts
@@ -48,8 +74,8 @@ in ``configuration.yaml``
 
 ```yaml
 rest_command:
-  gigaset_element_proxy_force_refresh:
-    url: 'http://myserver:3000/force-refresh'
+  gigaset_request:
+    url: 'http://localhost:8094/force-refresh'
 ```
 
 in ``automations.yaml``
