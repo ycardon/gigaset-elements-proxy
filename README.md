@@ -1,4 +1,4 @@
-# gigaset-elements-proxy v2.2.0
+# gigaset-elements-proxy v2.2.1
 
 Is a very simple gateway to [gigaset-elements](https://www.gigaset.com/fr_fr/cms/objets-connectes-apercu.html) API:
 
@@ -74,6 +74,9 @@ Note that if you're reading this page on github, theses links does not work: you
 | `sd01` smoke detector           | `smoke_no_longer_detected`         | `gigaset/<sensor name>`         | `default`              |
 | `sd01` smoke detector           | `end_sd01_smoke_detected`          | `gigaset/<sensor name>`         | `default`              |
 | `sd01` smoke detector           | `end_sd01_test`                    | ignored                         |                        |
+| `um01` universal sensor         | `open`                             | `gigaset/<sensor name>`         | `true`                 |
+| `um01` universal sensor         | `tilt`                             | `gigaset/<sensor name>`         | `true`                 |
+| `um01` universal sensor         | `close`                            | `gigaset/<sensor name>`         | `false`                |
 | basestation: alarm mode changed | `isl01.bs01.intrusion_mode_loaded` | `gigaset/<base name>`           | `<new alarm mode>`     |
 | any sensor                      | `battery_critical`                 | `gigaset/<sensor name>_battery` | `battery_critical`     |
 | `allow_unknown_events` is true  | any other event                    | `gigaset/<sensor name>`         | `<gigaset event type>` |
@@ -178,6 +181,10 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 
 -   can now be installed as an Hassio Addon
 -   _breaking change_ REST API port is now 8094 (and not 3000 as it used to be), can be changed in `config/default.yaml`
+
+### v2.2.1 Universal (18 oct 2019)
+
+-   added `um01` universal sensor
 
 ## credits
 
