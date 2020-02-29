@@ -17,6 +17,9 @@ export function gigasetEventMapper(event: gigasetEvents.IEventsItem) {
         case 'isl01.bs01.intrusion_mode_loaded': // changed security mode
             return [MQTT.TOPIC + 'intrusion_mode', event.o.modeAfter]
 
+        case 'isl01.bs01.intrusion_mode_loaded.fail':
+            return [MQTT.TOPIC + 'intrusion_mode_fail', event.o.modeAfter]
+
         case 'battery_critical': // critical battery on sensor
             return [topic + MQTT.TOPIC_BATTERY_SUFFIX, event.type]
     }
