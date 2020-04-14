@@ -1,4 +1,4 @@
-# gigaset-elements-proxy v2.2.5
+# gigaset-elements-proxy v2.2.6
 
 Is a very simple gateway to [gigaset-elements](https://www.gigaset.com/fr_fr/cms/objets-connectes-apercu.html) API:
 
@@ -186,6 +186,10 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
 
 -   added `um01` universal sensor
 
+### v2.2.6 Confinement (14 avril 2020)
+
+-   merged @ginkel fix for intrusion events: now using basestation id instead of friendly name (no more present in the event), discussion [here](https://github.com/ycardon/gigaset-elements-proxy/issues/23#issuecomment-582520068)
+
 ## credits
 
 -   Strongly inspired by the Python command line version that can be find under https://github.com/dynasticorpheus/gigaset-elements (thank you !!)
@@ -196,7 +200,7 @@ You can also check https://github.com/lorenwest/node-config/wiki/Configuration-F
     -   https://team-sik.org/sik-2016-046/
     -   https://team-sik.org/sik-2016-047/
     -   https://team-sik.org/sik-2016-048/
--   Thank you to [@h4nc](https://github.com/h4nc), [@dotvav](https://github.com/dotvav) and [@sracing](https://github.com/sracing) for their comments, suggestions and testing
+-   Thank you to [@h4nc](https://github.com/h4nc), [@dotvav](https://github.com/dotvav), [@sracing](https://github.com/sracing) and [@ginkel](https://github.com/ginkel) for their comments, suggestions, testing and code improvement
 
 ## building the project
 
