@@ -1,4 +1,4 @@
-# gigaset-elements-proxy v2.2.4
+# gigaset-elements-proxy v2.2.5
 
 Is a very simple gateway to [gigaset-elements](https://www.gigaset.com/fr_fr/cms/objets-connectes-apercu.html) API:
 

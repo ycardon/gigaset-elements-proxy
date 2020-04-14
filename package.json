@@ -1,6 +1,6 @@
 {
     "name": "gigaset-elements-proxy",
-    "version": "2.2.4",
+    "version": "2.2.5",
     "description": "a simple web and mqtt local gateway for reaching gigaset-elements API",
     "keywords": [
         "gigaset-elements",
@@ -14,7 +14,7 @@
     "scripts": {
         "start": "node app.js",
         "build": "node build.js && tsc",
-        "dev": "npm run build && pm2 stop gigaset && node app.js && open 'http://localhost:3000'",
+        "dev": "npm run build && node app.js && open 'http://localhost:3000'",
         "prepare": "npm run build"
     },
     "author": "Yann Cardon <ycardon@gmail.com>",
@@ -26,15 +26,15 @@
         "express": "^4.17.1",
         "js-yaml": "^3.13.1",
         "markdown-it": "^10.0.0",
-        "mqtt": "2.*.*",
+        "mqtt": "^3.0.0",
         "request": "^2.88.2",
         "source-map-support": "^0.5.16"
     },
     "preferGlobal": true,
     "devDependencies": {
         "@types/config": "0.0.36",
-        "@types/express": "^4.17.4",
-        "@types/markdown-it": "0.0.9",
+        "@types/express": "^4.17.6",
+        "@types/markdown-it": "10.0.0",
         "@types/request": "^2.48.4",
         "replace-in-file": "^5.0.2"
     }
