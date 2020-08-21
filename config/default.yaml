@@ -25,7 +25,7 @@ allow_unknown_events: false
 camera_id: 'xxxx'
 
 # camera local IP (used for local streaming)
-camera_ip: 'xxx.xxx.xxx.xxx'
+camera_ip: '192.168.xx.xx'
 
 # camera local password
 # $> echo –n "LUCKOTVF<MAC-address-reverse-order-uppercase-nocolon>YCAMVF" | base64
