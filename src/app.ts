@@ -35,4 +35,4 @@ eventer.once(eventer.AUTHORIZED, () => {
 })
 
 // reauthorize periodically
-setTimeout(authorize, conf('auth_interval') * 60 * 1000)
+setInterval(authorize, conf('auth_interval') * 60 * 1000)

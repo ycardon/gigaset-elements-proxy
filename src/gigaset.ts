@@ -30,8 +30,6 @@ export function authorize(callback = () => {}) {
 
 /**
  * log and try to recover from an unexpected gigaset response (ie. re-authorize)
- *
- * @remarks the gigaset connection tokens are sometimes reset on gigaset side at unexpectable time
  */
 export function handleGigasetError(functionName: string, error: object, body: string) {
     console.error(functionName + ' | unexpected error:', error)
