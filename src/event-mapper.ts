@@ -29,6 +29,7 @@ export function gigasetEventMapper(event: gigasetEvents.IEventsItem) {
 
         case 'ds02': // door sensors
         case 'ws02': // window sensors
+        case 'ps02': // plugs
         case 'um01': // universal sensors
             if (event.type == 'close') return [topic, 'false']
             else return [topic, 'true']
