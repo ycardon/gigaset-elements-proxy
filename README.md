@@ -1,3 +1,6 @@
+> This project is not maintained anymore (I no more use Gigaset Element devices)
+> If you are using HomeAssistant, you can check https://github.com/dynasticorpheus/gigasetelements-ha as a replacement
+
 # gigaset-elements-proxy v2.2.7
 
 Is a very simple gateway to [gigaset-elements](https://www.gigaset.com/fr_fr/cms/objets-connectes-apercu.html) API:
