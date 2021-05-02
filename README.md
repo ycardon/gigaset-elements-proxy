@@ -1,4 +1,5 @@
 > This project is not maintained anymore (I no more use Gigaset Element devices)
+> 
 > If you are using HomeAssistant, you can check https://github.com/dynasticorpheus/gigasetelements-ha as a replacement
 
 # gigaset-elements-proxy v2.2.7
