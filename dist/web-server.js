@@ -6,8 +6,13 @@ const utils_1 = require("./utils");
 const fs = require("fs");
 const express = require("express");
 const markdownIt = require("markdown-it");
+const rateLimit = require("express-rate-limit");
 // a web-server
 const app = express();
+const readmeLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100
+});
 // set the route: raw api
 app.get('/api/*', (req, res) => {
     gigaset_1.gigasetRequest.get(gigaset_1.GIGASET_URL.BASE + req.url).pipe(res);
@@ -76,7 +81,7 @@ app.get('/intrusion_settings', (_, res) => {
     });
 });
 // set the route: returns the readme.md as default page
-app.get('*', (_, res) => {
+app.get('*', readmeLimiter, (_, res) => {
     fs.readFile('README.md', 'utf8', (_, data) => {
         res.send(markdownIt().render(data.toString()));
     });
